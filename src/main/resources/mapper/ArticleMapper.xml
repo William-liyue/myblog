@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myblog.mapper.ArticleMapper">
+
+    <resultMap id="resultArticle" type="com.myblog.entity.Article">
+        <id property="id" column="id" />
+        <result property="title" column="title" />
+        <result property="content" column="content" />
+        <result property="tags" column="tags" />
+        <result property="isReprint" column="is_reprint" />
+        <result property="typeId" column="type_id" />
+        <result property="remark" column="remark" />
+        <result property="author" column="author" />
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="status" column="status" />
+        <result property="browsNum" column="brows_num" />
+        <result property="comments" column="comments"/>
+        <result property="userId" column="user_id"/>
+        <result property="likeNum" column="like_num"/>
+        <result property="isTop" column="is_top"/>
+        <result property="coverImage" column="cover_image" />
+        <result property="category" column="category"/>
+        <result property="isNew" column="is_new"/>
+        <result property="isRecommend" column="is_recommend"/>
+    </resultMap>
+
+    <!--开发sg_article2  服务器t_article-->
+    <select id="articleCount" resultType="Integer">
+        SELECT count(1) FROM myblog.t_article WHERE status=1
+    </select>
+
+    <!-- datediff(now(),sa.create_time)<=3 -->
+    <select id="findAll" resultMap="resultArticle">
+        SELECT st.title category,sa.*,
+               (CASE datediff(now(),sa.create_time)&lt;=3 WHEN 1 THEN 'new' ELSE 'old' END) is_new
+        FROM myblog.t_article sa INNER JOIN myblog.t_article_type st ON sa.type_id=st.id
+        where sa.status=1 ORDER BY sa.is_top DESC ,sa.create_time DESC LIMIT #{pageNow},#{pageSize}
+    </select>
+
+    <select id="getHotArticle" resultMap="resultArticle">
+        SELECT * FROM myblog.t_article WHERE status=1 ORDER BY `brows_num` DESC LIMIT 0,5
+    </select>
+
+    <select id="findArticleById" resultType="com.entity.Article" parameterType="Integer">
+        SELECT * FROM myblog.t_article WHERE id=#{id}
+    </select>
+
+    <insert id="addArticle" parameterType="com.entity.Article">
+        INSERT INTO myblog.t_article (title,content,remark,tags,type_id,cover_image,is_reprint,author,status,brows_num,comments,like_num,is_top,create_time)
+        VALUES (#{title},#{content},#{remark},#{tags},#{typeid},#{coverImage},#{isReprint},#{author},#{status},#{browsNum},#{comments},#{likeNum},#{isTop},#{createTime})
+    </insert>
+
+    <update id="updateBrows" parameterType="Integer">
+        UPDATE myblog.t_article SET brows_num=brows_num+1 WHERE id=#{id}
+    </update>
+
+
+    <update id="updateComments" parameterType="Integer">
+        UPDATE myblog.t_article SET comments=comments+1 WHERE id=#{id}
+    </update>
+</mapper>

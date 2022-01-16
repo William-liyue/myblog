@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns="http://www.w3.org/1999/html" dark="true">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maxinun-scale=1">
+    <title>MyBlog-关于我</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/../css/style.css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="/../css/iconfont.css" type="text/css" media="all">
+    <link rel="stylesheet" href="/../lib/layui-v2.6.8/layui/css/layui.css">
+</head>
+<body class="sp-dark-mode" style="--theme: #08cee1; transform: none;">
+<style>
+    .top-bar-left img {
+        max-width: 140px;
+    }
+    .sp-dark-mode #about-container{
+        color:#777;
+    }
+    #about-container p {
+        margin: 0 0 0.8rem;
+    }
+
+    #about-container .about-title {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    #about-container .about-text {
+        text-indent: 2em;
+        /*color: #49b1f5;*/
+    }
+
+</style>
+<!--导航-->
+<div class="top-bar">
+    <div class="new-bar-left container clearnav">
+        <div class="top-bar-left pull-left navs">
+            <nav class="top-bar-navigation">
+                <div class="top-bar-menu">
+                    <ul class="menu-item">
+                        <li>
+                            <a href="#" th:href="@{/}" class="logo box">
+                                <h2 class="bi me-2" style="width: 100%; background-color: #F08047;" aria-label="Bootstrap">
+                                    <img id="logo-light">
+                                    <img id="logo-dark">
+                                    <use xlink:href="#bootstrap">MyBlog</use>
+                                </h2>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/}" class="nav-link px-2 text-secondary"><i class="home icon"></i>首页</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/types/-1}" class="nav-link px-2 text-secondary"><i
+                                    class="clone outline icon"></i>分类</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/archives}" class="nav-link px-2 text-secondary"><i
+                                    class="coffee icon"></i>流年记</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/music}" class="nav-link px-2 text-secondary"><i class="music icon"></i>音乐盒</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/message}" class="nav-link px-2 text-secondary"><i class="book icon"></i>留言板</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/friends}" class="nav-link px-2 text-secondary"><i
+                                    class="pencil icon"></i>友人帐</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/resources}" class="nav-link px-2 text-secondary"><i
+                                    class="graduation cap icon"></i>资源库</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/about}" class="nav-link px-2 text-secondary"><i class="info icon"></i>关于我</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/blog}" class="nav-link px-2 text-secondary"><i
+                                    class="personal icon"></i>个人中心</a>
+                        </li>
+                    </ul>
+                    <div class="search-warp clearfix">
+                        <form class="search j-search" action="#" th:action="@{/search}" method="post" target="_blank">
+                            <input type="search" class=" form-control form-control-dark" name="query" placeholder="Search..." aria-label="Search" th:value="${query}">
+                            <button type="submit" name="query">Search</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="top-admin">
+                    <div class="new_header pull-right clearnav">
+                        <input class="wb-switch" id="J_themesSwitchBtn" type="checkbox" onclick="javascript:switchNightMode()">
+                        <!--夜间白天-->
+                        <div class="top-bar-right pull-right-login text-right">
+                            <a href="admin/login.html">
+                                <button type="button" class="btn btn-outline-light me-md-3">Login</button>
+                            </a>
+                            <!--<button type="button" class="btn btn-outline-warning">Sign-up</button>-->
+                        </div>
+                    </div>
+                </div>
+                <div id="percentageCounter" style="width: 0%;"></div>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!--个人资料描述-->
+<div class="site-main spimes-container" style="transform: none">
+    <div class="container" style="transform: none">
+        <main id="main" class="site-main" style="transform: none">
+            <div class="row">
+                <div class="col-md-3 widget-area" id="secondary">
+                    <section class="widget g_m_i">
+                        <h4 class="widget-title">
+                            <span>博主简介</span>
+                        </h4>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="vatar">
+                                    <img src="/static/images/" style="width: 45px;border-radius: 100%;">
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="row">
+                                    <span>辉哥</span>
+                                </div>
+                                <div class="row">
+                                    <i class="icon iconfont icon-dingwei"></i>
+                                    <span>湖南 常德</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <p style="text-indent: 2em;padding-left: 10px;padding-right: 5px;">
+                                一名Java程序员，达到成熟的一名程序员还需要时间。
+                            </p>
+                        </div>
+                    </section>
+                    <section class="widget_img g_m_i">
+                        <div class="adTags">
+                            <img src="/static/images/">
+                        </div>
+                    </section>
+                    <section class="widget g_m_i">
+                        <h4 class="widget-title">
+                            <i class="icon iconfont icon-wodeguanzhu"></i>
+                            <span>关注 栈长微信公众号</span>
+                        </h4>
+                        <img src="/static/images" alt="">
+                    </section>
+                    <section class="widget hunter-widget-hunter-authors">
+                        <h4 class="widget-title">
+                            <i class="icon iconfont icon-wodeguanzhu"></i>
+                            <span>互动读者</span>
+                        </h4>
+                        <div class="hunter-cont">
+                            <ul class="hunter-authors">
+                                <li>
+                                    <div class="item">
+                                        <div class="hunter-avatar">
+                                            <a href="javascript:alert('还在开发中哦……');">
+                                                <div class="avatar">
+                                                    <img src="/static/images" alt="">
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="item-main">
+                                            辉哥
+                                            <span class="autlv aut-4 vs">V</span>
+                                            <span class="autlv aut-6">Lv.7</span>
+                                            <h4>
+                                                评论 108 次
+                                                <i>|</i>
+                                                文章 52 篇
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="item">
+                                        <div class="hunter-avatar">
+                                            <a href="javascript:alert('还在开发中哦……');">
+                                                <div class="avatar">
+                                                    <img src="/static/images" alt="">
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="item-main">
+                                            辉哥
+                                            <span class="autlv aut-1">Lv.1</span>
+                                            <h4>
+                                                评论 1 次
+                                                <i>|</i>
+                                                暂无文章
+                                            </h4>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                    <section class="widget">
+                        <h4 class="widget-title">
+                            <i class="icon iconfont icon-paihangbang">
+
+                            </i>热门文章</h4>
+                        <div class="list-rounded my-n2">
+                            <div class="py-2">
+                                <div class="ricon_rank rank1">1</div>
+                                <div class="list-item list-overlay-content">
+                                    <div class="media media-2x1">
+                                        <a class="media-content" href="javascript:alert('还在开发中...');" style="background-image: url()">
+                                            <span class="overlay"></span>
+                                        </a>
+                                    </div>
+                                    <div class="list-content">
+                                        <div class="list-body">
+                                            <a class="list-title h-2x" href="javascript:alert('还在开发中...');">Spring</a>
+                                            <div class="list-footer">
+                                                <div class="text-muted text-xs">
+                                                    2 阅读，
+                                                    <time class="d-inline-block">11-20</time>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="widget widget-hunter-topics">
+                        <h4 class="widget-title">
+                            <i class="icon iconfont icon-huatifuhao"></i>
+                            <span>标签TAG</span>
+                        </h4>
+                        <div class="items">
+                            <div class="item">
+                                <div class="wall-item">
+                                    <a href="javascript:alert('还在开发中...');" rel="tag">
+                                        <h2>
+                                            <i class="clr_orange">#</i>
+                                            java
+                                        </h2>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <div class="wall-item">
+                                    <a href="javascript:alert('还在开发中...');" rel="tag">
+                                        <h2>
+                                            <i class="clr_orange">#</i>
+                                            java
+                                        </h2>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="widget-">
+                        <section class="widget wRecent">
+                            <h4 class="widget-title">
+                                <i class="icon iconfont icon-yuyin"></i>
+                                <span>最近回复</span>
+                            </h4>
+                            <div class="item">
+                                <div class="meta">
+                                    <div class="media-item">
+                                        <span class="comment-avatar">
+                                            <i class="thumb" style="background-image: url('')"></i>
+                                        </span>
+                                        辉哥
+                                        <span class="autlv aut-1">Lv.1</span>
+                                    </div>
+                                    <span class="views">昨天 13:00</span>
+                                </div>
+                                <div class="comment-content">
+                                    <p>
+                                        <a href="javascript:alert('还在开发中...');"></a>
+                                    </p>
+                                    <p>
+                                        <a href="javascript:alert('还在开发中...');">Hi Siri!!!</a>
+                                    </p>
+                                    <a href="javascript:alert('还在开发中...');"></a>
+                                </div>
+                                <h2>
+                                    <i class="icon iconfont icon-taolunqu"></i>
+                                    <a href="javascript:alert('还在开发中...');">这个博客页面很优美！</a>
+                                </h2>
+                            </div>
+                            <div class="viewAll">
+                                <a class="btn " href="javascript:alert('还在开发中...');">
+                                    我要留言
+                                    <i class="icon iconfont icon-gengduo"></i>
+                                </a>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="contpost">
+                        <div id="about-container">
+                            <p> </p>
+                            <div class="about-title">关于博主</div>
+                            <div class="about-text"></div>
+                            <p> </p>
+                            <p></p>
+                            <div class="about-title">辉哥</div>
+                            <div class="about-text"></div>
+                            <p></p>
+                            <p> </p>
+                            <div class="about-title">联系方式</div>
+                            <p></p>
+                            <p></p>
+                            <div style="padding-left: 25px;">
+                                <p>公众号：</p>
+                                <p>QQ：1927457049</p>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+<!--底部栏-->
+<footer class="site-footer fsi">
+        <div class="" style="margin-top: 140px;text-align: center;">
+            <div class="footer-lstm" style="color: #FFFFFF">
+                <p>Copyright©2020-2021</p>
+                <p>
+                    <a href="" target="_blank" rel="nofollow" style="color: #B4BF42;">湘ICP</a>
+                    <a href="" target="_blank" rel="nofollow" style="color: #B4BF42;"><img src="" alt="">湘公网</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"></script>
+<script src="/../lib/layui-v2.6.8/layui/layui.js"></script>
+<script>
+    jQuery(function(a) {
+        var c = "ontouchstart" in window ? "touchstart" : "click";
+        (function() {
+            var b = a(window),
+                e = a("#scroll-to-top");
+            b.scroll(function() {
+                e[100 < b.scrollTop() ? "removeClass" : "addClass"]("hidden")
+            });
+            e.on(c, function(b) {
+                b.preventDefault();
+                a("body, html").animate({
+                    scrollTop: 0
+                }, 500)
+            })
+        })()
+    });
+
+    jQuery(document).ready(function(a) {
+        let flag;
+        function c(b, c, d) {
+
+            flag = !0;
+            a(b).click(function() {
+                a(b).prop("class", (flag = !flag) ? c : d)
+            })
+        }(function(b, c, d) {
+            flag = !0;
+            a(b).mouseover(function() {
+                a("#aus").prop("class", d)
+            })
+        })("#auStats", "austats_click", "austats_close");
+        (function(b, c) {
+            flag = !0;
+            a(b).mouseleave(function() {
+                a("#aus").prop("class", c)
+            })
+        })("#aus", "austats_click", "austats_close");
+        c("#mStats", "stats_click", "stats_close");
+        c("#mClick", "mobile_click", "mobile_close");
+
+        //以下对于手机端新增  start
+        function mobileC(b, c, d) {
+            flag = !0;
+            a(b).click(function() {
+                a(b).prop("class", (flag = !flag) ? c : d)
+            })
+        }(function(b, c, d) {
+            flag = !0;
+            a(b).mouseover(function() {
+                a("#mobileAus").prop("class", d)
+            })
+        })("#mobileAuStats", "austats_click", "austats_close");
+        (function(b, c) {
+            flag = !0;
+            a(b).mouseleave(function() {
+                a("#mobileAus").prop("class", c)
+            })
+        })("#mobileAus", "austats_click", "austats_close");
+        //----end
+
+        (function(b, c, d) {
+            flas = flag = !0;
+            a(b).click(function() {
+                a("#navbar-search").prop("class", (flag = !flag) ? c : d);
+                a("#soico").prop("class", (flas = !flas) ? "icon iconfont icon-sousuo" : "icon iconfont icon-shibai1")
+            })
+        })("#soStats", "navbar-search socollapse sostats soopen", "navbar-search socollapse sostats sooff");
+    });
+
+    <!--滑动条-->
+    $(window).scroll(function() {
+        var a = $(window).scrollTop(),
+            c = $(document).height(),
+            b = $(window).height();
+        scrollPercent = a / (c - b) * 100;
+        scrollPercent = scrollPercent.toFixed(1);
+        $("#percentageCounter").css({
+            width: scrollPercent + "%"
+        })
+    }).trigger("scroll");
+
+    jQuery(document).ready(function(a) {
+        var c = function() {
+            var a = document.createElement("event"),
+                c = {
+                    WebkitTransition: "webkitTransitionEnd",
+                    MozTransition: "transitionend",
+                    transition: "transitionend"
+                },
+                d;
+            for (d in c)
+                if (void 0 !== a.style[d]) return c[d]
+        }();
+        a('[data-toggle\x3d"offcanvas"], .mobile-overlay').click(function() {
+            a(".mobile-overlay").toggleClass("active");
+            a("body").toggleClass("active");
+            a(".row-offcanvas").toggleClass("active");
+            a(".sidebar-offcanvas").toggleClass("active");
+            a(".navbar-toggle").toggleClass("collapsed");
+            a(".navbar-collapse").addClass("transition");
+            a(".collapse").toggleClass("navss");
+            a(".m_nav-list").toggleClass("m_nav-close");
+            a(".transition").one(c, function(b) {
+                a(".navbar-collapse").removeClass("transition")
+            });
+
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                a(".g_m_i").appendTo(".mobile-sidebar-column");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                a(".g_m_i").appendTo(".mobile-sidebar-column");
+            } else {
+                a(".g_m_i").appendTo(".mobile-sidebar-column");
+            };
+
+
+        })
+    });
+
+    function switchNightMode() {
+        "0" == (
+            document.cookie.replace(/(?:(?:^|.*;\s*)night\s*\=\s*([^;]*).*$)|^.*$/, "$1") || "0")
+            ? (document.body.classList.add("sp-dark-mode"),
+                document.getElementById("logo-light").classList.add("d-none"),
+                document.getElementById("logo-dark").classList.remove("d-none"),
+                document.cookie = "night\x3d1;path\x3d/",
+                $('html').attr('dark',true),
+                console.log("5555 \u591c\u95f4\u6a21\u5f0f\u5f00\u542f"))
+            : (document.body.classList.remove("sp-dark-mode"),
+                    document.getElementById("logo-light").classList.remove("d-none"),
+                    document.getElementById("logo-dark").classList.add("d-none"),
+                    document.cookie = "night\x3d0;path\x3d/",
+                    $('html').removeAttr('dark'),
+                    console.log("666666 \u591c\u95f4\u6a21\u5f0f\u5173\u95ed")
+
+            )
+    }(function() {
+        if ($(".wb-switch").length > 0) {
+            if ("" === document.cookie.replace(/(?:(?:^|.*;\s*)night\s*\=\s*([^;]*).*$)|^.*$/, "$1"))
+
+                21 < (new Date).getHours() || 6 > (new Date).getHours()
+                    ? (document.body.classList.remove("sp-dark-mode"),
+                        document.getElementById("logo-light").classList.remove("d-none"),
+                        document.getElementById("logo-dark").classList.add("d-none"),
+                        document.cookie = "night\x3d0;path\x3d/",
+                        $('html').removeAttr('dark'),
+                        console.log("77777 \u591c\u95f4\u6a21\u5f0f\u5f00\u542f"))
+                    : (document.body.classList.add("sp-dark-mode"),
+                        document.getElementById("logo-light").classList.add("d-none"),
+                        document.getElementById("logo-dark").classList.remove("d-none"),
+                        document.cookie ="night\x3d1;path\x3d/",
+                        $('html').attr('dark',true),
+                        console.log("88888 \u591c\u95f4\u6a21\u5f0f\u5173\u95ed"));
+            else {
+                var a = document.cookie.replace(/(?:(?:^|.*;\s*)night\s*\=\s*([^;]*).*$)|^.*$/, "$1") || "0";
+                "0" == a ? (document.body.classList.remove("sp-dark-mode"),
+                        document.getElementById("logo-light").classList.remove("d-none"),
+                        document.getElementById("logo-dark").classList.add("d-none"),
+                        $('html').removeAttr('dark'))
+                    : "1" == a && (document.body.classList.add("sp-dark-mode"),
+                    document.getElementById("logo-light").classList.add("d-none"),
+                    document.getElementById("logo-dark").classList.remove("d-none"),
+                    $('html').attr('dark',true))
+            }}
+    })();
+
+    $(document).ready(function() {
+        var navOffw = $(".secnav").width();
+        var navOffh = $(".top-bar").height() * 4;
+        if (navOffw > 750) {
+            var navOffset = $(".secnav").offset().top; //先得到据顶部的距离
+            $(window).scroll(function() {
+                var scrollPos = $(window).scrollTop(); //得到滚动的距离
+                if (scrollPos >= navOffh) { //比较判断是否fixed
+                    $(".secnav").stop().slideUp();
+                    $("#post_top_title").removeClass("post_no");
+                    if ( $("#post_top_title").length > 0 ){
+                        $(".top-bar-navigation").addClass("post_no");
+                    }
+                } else {
+                    $(".secnav").stop().slideDown();
+                    $("#post_top_title").addClass("post_no");
+                    $(".top-bar-navigation").removeClass("post_no");
+                    $(".top_so").removeClass("top_ac");
+                }
+            })
+        }
+    })
+</script>
+<script>
+    $('#newblog-container').load(/*[[@{/footer/newblog}]]*/"/footer/newblog");
+
+    <!--滑动条-->
+    $(window).scroll(function() {
+        var a = $(window).scrollTop(),
+            c = $(document).height(),
+            b = $(window).height();
+        scrollPercent = a / (c - b) * 100;
+        scrollPercent = scrollPercent.toFixed(1);
+        $("#percentageCounter").css({
+            width: scrollPercent + "%"
+        })
+    }).trigger("scroll");
+
+    $('.menu.toggle').click(function () {
+        $('.m-item').toggleClass('m-mobile-hide');
+    });
+
+    // 显示公众号
+    $('.tencent').popup({
+        popup: $('.tencent-qr'),
+        position: 'bottom center'
+    });
+
+    // 显示微信
+    $('.wechat').popup({
+        popup: $('.wechat-qr'),
+        position: 'bottom center'
+    });
+
+    // 显示QQ
+    $('.qq').popup({
+        popup: $('.qq-qr'),
+        position: 'bottom center'
+    });
+
+    // 显示邮箱
+    $('.email').popup();
+
+    // 显示CSDN
+    $('.csdn').popup();
+
+</script>
+</body>
+</html>

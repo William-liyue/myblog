@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html class="no-js" xmlns:th="http://www.w3.org/1999/xhtml" dark="true">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maxing-scale=1">
+    <title>MyBlog-友人帐</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/../css/style.css" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="/../css/iconfont.css" type="text/css" media="all">
+    <link rel="stylesheet" href="/../lib/owo/OwO.min.css" type="text/css" media="all">
+</head>
+<body class="sp-dark-mode" style="--theme: #2299DD; transform: none;">
+<style type="text/css">
+    .top-bar-left img {
+        max-width: 140px;
+    }
+
+    /* 以下是友链样式*/
+    .flink-list {
+        overflow: auto;
+        padding: 10px 10px 0;
+        text-align: center;
+    }
+
+    .flink-list > .flink-list-item {
+        position: relative;
+        float: left;
+        overflow: hidden;
+        margin: 20px 7px;
+        width: calc(100% / 3 - 15px);
+        height: 90px;
+        border-radius: 8px;
+        line-height: 17px;
+        -webkit-transform: perspective(1px) translateZ(0);
+        -moz-transform: perspective(1px) translateZ(0);
+        -o-transform: perspective(1px) translateZ(0);
+        -ms-transform: perspective(1px) translateZ(0);
+        transform: perspective(1px) translateZ(0);
+    }
+
+    .flink-list > .flink-list-item:before {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: -1;
+        background: #49b1f5;
+        content: '';
+        -webkit-transition-timing-function: ease-out;
+        -moz-transition-timing-function: ease-out;
+        -o-transition-timing-function: ease-out;
+        -ms-transition-timing-function: ease-out;
+        transition-timing-function: ease-out;
+        -webkit-transition-duration: 0.3s;
+        -moz-transition-duration: 0.3s;
+        -o-transition-duration: 0.3s;
+        -ms-transition-duration: 0.3s;
+        transition-duration: 0.3s;
+        -webkit-transition-property: -webkit-transform;
+        -moz-transition-property: -moz-transform;
+        -o-transition-property: -o-transform;
+        -ms-transition-property: -ms-transform;
+        transition-property: transform;
+        -webkit-transform: scale(0);
+        -moz-transform: scale(0);
+        -o-transform: scale(0);
+        -ms-transform: scale(0);
+        transform: scale(0);
+    }
+
+    .flink#article-container .flink-list > .flink-list-item a {
+        color: #1f2d3d;
+        text-decoration: none;
+    }
+
+    .flink-list > .flink-list-item a img {
+        float: left;
+        margin: 13px 0 0 10px;
+        width: 65px;
+        height: 65px;
+        border-radius: 35px;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        -o-transition: all 0.3s;
+        -ms-transition: all 0.3s;
+        transition: all 0.3s;
+    }
+
+    .flink-list > .flink-list-item:hover img {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+
+    .flink-list > .flink-list-item:hover:before,
+    .flink-list > .flink-list-item:focus:before,
+    .flink-list > .flink-list-item:active:before {
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -o-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+    }
+
+
+    .flink-list > .flink-list-item a .flink-item-name {
+        padding: 16px 10px 0 0;
+        height: 40px;
+        font-weight: bold;
+        font-size: 20px;
+
+
+    }
+
+
+    .flink-list > .flink-list-item a .flink-item-desc {
+        padding: 16px 10px;
+        height: 50px;
+        font-size: 13px;
+    }
+
+    .flink-list > .flink-list-item a .flink-item-name,
+    .flink-list > .flink-list-item a .flink-item-desc {
+        overflow: hidden;
+        -o-text-overflow: ellipsis;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+
+    @media screen and (max-width: 1100px) {
+        .flink-list > .flink-list-item {
+            width: calc(50% - 15px) !important;
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        .flink-list > .flink-list-item {
+            width: calc(100% - 15px) !important;
+        }
+    }
+
+    hr {
+        position: relative;
+        margin: 2rem auto;
+        border: 2px dashed #a4d8fa;
+        width: calc(100% - 4px);
+
+        box-sizing: content-box;
+        height: 0;
+        overflow: visible;
+    }
+
+    hr:before {
+        position: absolute;
+        top: -10px;
+        left: 5%;
+        z-index: 1;
+        color: #80c8f8;
+        content: '\f0c4';
+        font-size: 20px;
+        line-height: 1;
+        -webkit-transition: all 1s ease-in-out;
+        -moz-transition: all 1s ease-in-out;
+        -o-transition: all 1s ease-in-out;
+        -ms-transition: all 1s ease-in-out;
+        transition: all 1s ease-in-out;
+
+        display: inline-block;
+        font-weight: 600;
+        font-style: normal;
+        font-variant: normal;
+        font-family: 'Font Awesome 5 Free';
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .flink-ul {
+        margin-top: 0.4rem;
+        padding-inline-start: 40px;
+    }
+
+    .flink-ul li {
+        position: relative;
+        margin: 0.3rem 0;
+        padding-left: 0.3rem;
+    }
+
+    .layui-flow-more {
+        text-align: center;
+    }
+
+</style>
+<!--导航-->
+<div class="top-bar">
+    <div class="new-bar-left container clearnav">
+        <div class="top-bar-left pull-left navs">
+            <nav class="top-bar-navigation">
+                <div class="top-bar-menu">
+                    <ul class="menu-item">
+                        <li>
+                            <a href="#" th:href="@{/}" class="logo box">
+                                <h2 class="bi me-2" style="width: 100%; background-color: #F08047;" aria-label="Bootstrap">
+                                    <use xlink:href="#bootstrap"></use>
+                                    MyBlog
+                                </h2>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/}" class="nav-link px-2 text-secondary"><i class="home icon"></i>首页</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/types/-1}" class="nav-link px-2 text-secondary"><i
+                                    class="clone outline icon"></i>分类</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/archives}" class="nav-link px-2 text-secondary"><i
+                                    class="coffee icon"></i>流年记</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/music}" class="nav-link px-2 text-secondary"><i
+                                    class="music icon"></i>音乐盒</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/message}" class="nav-link px-2 text-secondary"><i
+                                    class="book icon"></i>留言板</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/friends}" class="nav-link px-2 text-secondary"><i
+                                    class="pencil icon"></i>友人帐</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/resources}" class="nav-link px-2 text-secondary"><i
+                                    class="graduation cap icon"></i>资源库</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/about}" class="nav-link px-2 text-secondary"><i
+                                    class="info icon"></i>关于我</a>
+                        </li>
+                        <li>
+                            <a href="#" th:href="@{/blog}" class="nav-link px-2 text-secondary"><i
+                                    class="personal icon"></i>个人中心</a>
+                        </li>
+                    </ul>
+                    <div class="search-warp clearfix">
+                        <form class="search j-search" action="#" th:action="@{/search}" method="post" target="_blank">
+                            <input type="search" class=" form-control form-control-dark" name="query"
+                                   placeholder="Search..." aria-label="Search" th:value="${query}">
+                            <button type="submit" name="query">Search</button>
+                        </form>
+                    </div>
+                    <div class="top-admin">
+                        <div class="new_header pull-left clearnav">
+                            <input class="wb-switch" id="J_themesSwitchBtn" type="checkbox"
+                                   onclick="javascript:switchNightMode()">
+                            <!--夜间白天-->
+                            <div class="top-bar-right pull-right-login text-right">
+                                <a href="admin/login.html">
+                                    <button type="button" class="btn btn-outline-light me-md-3">Login</button>
+                                </a>
+                                <!--<button type="button" class="btn btn-outline-warning">Sign-up</button>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="percentageCounter" style="width: 0%;"></div>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!--中间内容-->
+<div class="site-main spimes-container" style="transform: none;">
+    <div class="container" style="transform: none;">
+        <main id="main" class="site-main" style="transform: none;">
+            <div class="row" style="transform: none;">
+                <div class="col-md-3 widget-area" id="secondary"
+                     style="position: relative; overflow: visible; box-sizing: border-box; min-height: 1px;">
+                    <div class="theiaStickySidebar"
+                         style="padding-top: 0px; padding-bottom: 1px; position: static; transform: none;">
+                        <section class="widget g_m_i">
+                            <h4 class="widget-title">
+                                <span>博主简介</span>
+                            </h4>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="vatar">
+                                        <img src="/static/images/"
+                                             style="width: 45px;border-radius: 100%;">
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <span>辉哥</span>
+                                    </div>
+                                    <div class="row">
+                                        <i class="icon iconfont icon-dingwei"></i>
+                                        <span>湖南 常德</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <p style="text-indent: 2em;padding-left: 10px;padding-right: 5px;">
+                                    一名Java程序员
+                                </p>
+                            </div>
+
+                        </section>
+                        <section class="widget_img g_m_i">
+                            <div class="adTags">
+                                <img src="/static/images/">
+                            </div>
+                        </section>
+                        <section class="widget g_m_i">
+                            <h4 class="widget-title">
+                                <i class="icon iconfont icon-wodeguanzhu"></i>
+                                <span>关注 栈长微信公众号</span>
+                            </h4>
+                            <img src="/static/images/">
+                        </section>
+                        <section class="widget hunter-widget-hunter-authors">
+                            <h4 class="widget-title">
+                                <i class="icon iconfont icon-wodeguanzhu"></i>
+                                <span>互动读者</span>
+                            </h4>
+                            <div class="hunter-cont">
+                                <ul class="hunter-authors">
+                                    <li>
+                                        <div class="item">
+                                            <div class="hunter-avatar">
+                                                <a href="javascript:alert('还在开发中哦……');">
+                                                    <div class="vatar">
+                                                        <img src="/static/images/">
+                                                    </div>
+                                                </a>
+                                            </div>
+                                            <div class="item-main">辉哥
+                                                <span class="autlv aut-4 vs">V</span>
+                                                <span class="autlv aut-6">Lv.7</span>
+                                                <h4>评论 108 次 <i>|</i>文章 52 篇 </h4>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <div class="hunter-avatar">
+                                                <div class="vatar">
+                                                    <img src="/static/images/">
+                                                </div>
+                                            </div>
+                                            <div class="item-main">
+                                                <div>欧阳飘雪
+                                                    <span class="autlv aut-1">Lv.1</span>
+                                                    <h4>评论 17 次 <i>|</i>暂无文章 </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <div class="hunter-avatar">
+                                                <div class="vatar">
+                                                    <img src="/static/front/images/headimg/sima.jpg">
+                                                </div>
+                                            </div>
+                                            <div class="item-main">
+                                                <div>司马抚琴
+                                                    <span class="autlv aut-1">Lv.1</span>
+                                                    <h4>评论 14 次 <i>|</i>暂无文章 </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item">
+                                            <div class="hunter-avatar">
+                                                <div class="vatar">
+                                                    <img src="/static/front/images/headimg/huangpu.png">
+                                                </div>
+                                            </div>
+                                            <div class="item-main">
+                                                <div>皇甫望江
+                                                    <span class="autlv aut-1">Lv.1</span>
+                                                    <h4>评论 12 次 <i>|</i>暂无文章 </h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="widget">
+                            <h4 class="widget-title">
+                                <i class="icon iconfont icon-paihangbang"></i>
+                                <span>热门文章</span>
+                            </h4>
+                            <div class="list-rounded my-n2">
+                                <div class="py-2">
+                                    <div class="ricon_rank rank1">1</div>
+                                    <div class="list-item list-overlay-content">
+                                        <div class="media media-2x1">
+                                            <a class="media-content" href="javascript:alert('还在开发中哦……');"
+                                               style="background-image:url(https://zhenqioss.oss-cn-beijing.aliyuncs.com/somnus/1538918020851.png);">
+                                                <span class="overlay"></span>
+                                            </a>
+                                        </div>
+                                        <div class="list-content">
+                                            <div class="list-body">
+                                                <a href="javascript:alert('还在开发中哦……');" class="list-title h-2x">Springboot2.x搭建个人博客(环境搭建篇)</a>
+                                            </div>
+                                            <div class="list-footer">
+                                                <div class="text-muted text-xs">4,226 阅读 ，
+                                                    <time class="d-inline-block">08-21</time>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="py-2">
+                                    <div class="ricon_rank rank2">2</div>
+                                    <div class="list-item list-overlay-content">
+                                        <div class="media media-2x1">
+                                            <a class="media-content" href="javascript:alert('还在开发中哦……');"
+                                               style="background-image:url(https://zhenqioss.oss-cn-beijing.aliyuncs.com/somnus/1540647497976.png);">
+                                                <span class="overlay"></span>
+                                            </a>
+                                        </div>
+                                        <div class="list-content">
+                                            <div class="list-body">
+                                                <a href="javascript:alert('还在开发中哦……');" class="list-title h-2x">从零开始搭建微信小程序商城（一）</a>
+                                            </div>
+                                            <div class="list-footer">
+                                                <div class="text-muted text-xs">4,014 阅读 ，
+                                                    <time class="d-inline-block">01-06</time>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="py-2">
+                                    <div class="ricon_rank rank3">3</div>
+                                    <div class="list-item list-overlay-content">
+                                        <div class="media media-2x1">
+                                            <a class="media-content" href="javascript:alert('还在开发中哦……');"
+                                               style="background-image:url(https://zhenqioss.oss-cn-beijing.aliyuncs.com/somnus/1541940845937.png);">
+                                                <span class="overlay"></span>
+                                            </a>
+                                        </div>
+                                        <div class="list-content">
+                                            <div class="list-body">
+                                                <a href="javascript:alert('还在开发中哦……');" class="list-title h-2x">PHP8都快出来了，看看有哪些新功能？</a>
+                                            </div>
+                                            <div class="list-footer">
+                                                <div class="text-muted text-xs">3,626 阅读 ，
+                                                    <time class="d-inline-block">08-21</time>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="py-2">
+                                    <div class="ricon_rank rank4">4</div>
+                                    <div class="list-item list-overlay-content">
+                                        <div class="media media-2x1">
+                                            <a class="media-content" href="javascript:alert('还在开发中哦……');"
+                                               style="background-image:url(https://zhenqioss.oss-cn-beijing.aliyuncs.com/somnus/1538881870439.png);">
+                                                <span class="overlay"></span>
+                                            </a>
+                                        </div>
+                                        <div class="list-content">
+                                            <div class="list-body">
+                                                <a href="javascript:alert('还在开发中哦……');" class="list-title h-2x">都说人生苦短，我用python，是时候学习python了</a>
+                                            </div>
+                                            <div class="list-footer">
+                                                <div class="text-muted text-xs">3,387 阅读 ，
+                                                    <time class="d-inline-block">01-18</time>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="widget widget-hunter-topics">
+                            <h4 class="widget-title">
+                                <i class="icon iconfont icon-huatifuhao"></i>
+                                <span>标签TAG</span>
+                            </h4>
+                            <div class="items">
+                                <div class="item ">
+                                    <div class="wall-item">
+                                        <a href="javascript:alert('还在开发中哦……');" rel="tag">
+                                            <h2>
+                                                <i class="clr_orange">#</i> Java
+                                            </h2>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item ">
+                                    <div class="wall-item">
+                                        <a href="javascript:alert('还在开发中哦……');" rel="tag">
+                                            <h2>
+                                                <i class="clr_orange">#</i> PHP
+                                            </h2>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item ">
+                                    <div class="wall-item">
+                                        <a href="javascript:alert('还在开发中哦……');" rel="tag">
+                                            <h2>
+                                                <i class="clr_orange">#</i> 云服务器
+                                            </h2>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item ">
+                                    <div class="wall-item">
+                                        <a href="javascript:alert('还在开发中哦……');" rel="tag">
+                                            <h2>
+                                                <i class="clr_orange">#</i> Linux
+                                            </h2>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item ">
+                                    <div class="wall-item">
+                                        <a href="javascript:alert('还在开发中哦……');" rel="tag">
+                                            <h2>
+                                                <i class="clr_orange">#</i> Springboot
+                                            </h2>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item ">
+                                    <div class="wall-item">
+                                        <a href="javascript:alert('还在开发中哦……');" rel="tag">
+                                            <h2>
+                                                <i class="clr_orange">#</i> SpringCloud
+                                            </h2>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item ">
+                                    <div class="wall-item">
+                                        <a href="javascript:alert('还在开发中哦……');" rel="tag">
+                                            <h2>
+                                                <i class="clr_orange">#</i> Redis
+                                            </h2>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item ">
+                                    <div class="wall-item">
+                                        <a href="javascript:alert('还在开发中哦……');" rel="tag">
+                                            <h2>
+                                                <i class="clr_orange">#</i> HTML
+                                            </h2>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item ">
+                                    <div class="wall-item">
+                                        <a href="javascript:alert('还在开发中哦……');" rel="tag">
+                                            <h2>
+                                                <i class="clr_orange">#</i> MongoDb
+                                            </h2>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item ">
+                                    <div class="wall-item">
+                                        <a href="javascript:alert('还在开发中哦……');" rel="tag">
+                                            <h2>
+                                                <i class="clr_orange">#</i> RabbitMq
+                                            </h2>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item ">
+                                    <div class="wall-item">
+                                        <a href="javascript:alert('还在开发中哦……');" rel="tag">
+                                            <h2>
+                                                <i class="clr_orange">#</i> Kafka
+                                            </h2>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="item ">
+                                    <div class="wall-item">
+                                        <a href="javascript:alert('还在开发中哦……');" rel="tag">
+                                            <h2>
+                                                <i class="clr_orange">#</i> cocos2d-x
+                                            </h2>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="widget g_m_i">
+                            <h4 class="widget-title">
+                                <i class="icon iconfont icon-taolunqu"></i>
+                                <span>热评文章</span></h4>
+                            <ul class="posts-widget">
+                                <li>
+                                    <div class="widget-posts-text">
+                                        <a class="widget-posts-title" href="javascript:alert('还在开发中哦……');"
+                                           title="关注微信公众号后，自动回复">
+                                            <i class="icon iconfont icon-icon-test29"></i>关注微信公众号后，自动回复
+                                        </a>
+                                        <div class="widget-posts-meta"><i>78 评论</i></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="widget-posts-text">
+                                        <a class="widget-posts-title" href="hjavacript:;" title="Nginx实现反向代理">
+                                            <i class="icon iconfont icon-icon-test29"></i>Nginx实现反向代理
+                                        </a>
+                                        <div class="widget-posts-meta"><i>57 评论</i></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="widget-posts-text">
+                                        <a class="widget-posts-title" href="javascript:alert('还在开发中哦……');"
+                                           title="cocos2d-x实现保卫萝卜游戏">
+                                            <i class="icon iconfont icon-icon-test29"></i>cocos2d-x实现保卫萝卜游戏
+                                        </a>
+                                        <div class="widget-posts-meta"><i>42 评论</i></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="widget-posts-text">
+                                        <a class="widget-posts-title" href="javascript:alert('还在开发中哦……');"
+                                           title="网站优化SEO">
+                                            <i class="icon iconfont icon-icon-test29"></i>网站优化SEO
+                                        </a>
+                                        <div class="widget-posts-meta"><i>21 评论</i></div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="widget-posts-text">
+                                        <a class="widget-posts-title" href="javascript:alert('还在开发中哦……');"
+                                           title="人生苦短，我用python">
+                                            <i class="icon iconfont icon-icon-test29"></i>人生苦短，我用python
+                                        </a>
+                                        <div class="widget-posts-meta"><i>17 评论</i>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="widget-posts-text">
+                                        <a class="widget-posts-title" href="javascript:alert('还在开发中哦……');"
+                                           title="基于Vue2.X开发UI组件库(qiucode-ui)">
+                                            <i class="icon iconfont icon-icon-test29"></i>基于Vue2.X开发UI组件库(qiucode-ui)
+                                        </a>
+                                        <div class="widget-posts-meta"><i>12 评论</i></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </section>
+                        <div class="widget-fixed">
+                            <section class="widget wRecent">
+                                <h4 class="widget-title">
+                                    <i class="icon iconfont icon-yuyin"></i>
+                                    <span>最近回复</span>
+                                </h4>
+                                <div class="item">
+                                    <div class="meta">
+                                        <div class="meta-item">
+                                                <span class="comment-avatar">
+                                                    <i class="thumb "
+                                                       style="background-image:url(/static/images)"></i>
+                                                </span> 乔碧萝殿下
+                                            <span class="autlv aut-1">Lv.1</span>
+                                        </div>
+                                        <span class="views">昨天 14:57</span>
+                                    </div>
+                                    <div class="comment-content">
+                                        <p>
+                                            <a href="javascript:alert('还在开发中哦……');">
+                                            </a></p>
+                                        <p><a href="javascript:alert('还在开发中哦……');">博主可以分享下解密未去授权的么。如果可以发送邮箱，不胜感激</a></p>
+                                        <a href="javascript:alert('还在开发中哦……');">
+                                        </a>
+                                        <p></p>
+                                    </div>
+                                    <h2>
+                                        <i class="icon iconfont icon-taolunqu"></i>
+                                        <a href="javascript:alert('还在开发中哦……');"> 这个博客页面很优美！ </a>
+                                    </h2>
+                                </div>
+                                <div class="item">
+                                    <div class="meta">
+                                        <div class="meta-item">
+                                            <span class="comment-avatar">
+                                                <i class="thumb " style="background-image:url(/static/images)"></i>
+                                            </span> 偷电瓶的
+                                            <span class="autlv aut-1">Lv.1</span>
+                                        </div>
+                                        <span class="views">昨天 14:32</span>
+                                    </div>
+                                    <div class="comment-content">
+                                        <p>
+                                            <a href="javascript:alert('还在开发中哦……');">
+                                            </a></p>
+                                        <p><a href="javascript:alert('还在开发中哦……');">请管好你的电瓶，要不然的话，你可能需要打的回家了！</a></p><a
+                                            href="javascript:alert('还在开发中哦……');">
+                                    </a>
+                                        <p></p>
+                                    </div>
+                                    <h2>
+                                        <i class="icon iconfont icon-taolunqu"></i>
+                                        <a href="javascript:alert('还在开发中哦……');"> 世界在变，而我家却没变！ </a>
+                                    </h2>
+                                </div>
+                                <div class="item">
+                                    <div class="meta">
+                                        <div class="meta-item">
+                    <span class="comment-avatar">
+                        <i class="thumb " style="background-image:url(/static/images)"></i>
+                    </span> 听说你戒烟了
+                                            <span class="autlv aut-1">Lv.1</span>
+                                        </div>
+                                        <span class="views">一天前</span>
+                                    </div>
+                                    <div class="comment-content">
+                                        <p>
+                                            <a href="javascript:alert('还在开发中哦……');">
+                                            </a></p>
+                                        <p><a href="javascript:alert('还在开发中哦……');">烟好戒，但……</a></p><a
+                                            href="javascript:alert('还在开发中哦……');">
+                                    </a>
+                                        <p></p>
+                                    </div>
+                                    <h2>
+                                        <i class="icon iconfont icon-taolunqu"></i>
+                                        <a href="javascript:alert('还在开发中哦……');"> 混迹于IT行业也好些年了，是时候退场了！</a>
+                                    </h2>
+                                </div>
+                                <div class="item">
+                                    <div class="meta">
+                                        <div class="meta-item">
+                    <span class="comment-avatar">
+                        <i class="thumb " style="background-image:url(/static/images)"></i>
+                    </span> 寒江孤影
+                                            <span class="autlv aut-1">Lv.1</span>
+                                        </div>
+                                        <span class="views">4天前</span>
+                                    </div>
+                                    <div class="comment-content">
+                                        <p>
+                                            <a href="javascript:alert('还在开发中哦……');">
+                                            </a></p>
+                                        <p><a href="javascript:alert('还在开发中哦……');">你怎么不买腾讯呢，花这个钱</a></p><a
+                                            href="javascript:alert('还在开发中哦……');">
+                                    </a>
+                                        <p></p>
+                                    </div>
+                                    <h2>
+                                        <i class="icon iconfont icon-taolunqu"></i>
+                                        <a href="javascript:alert('还在开发中哦……');"> 618阿里云特惠</a>
+                                    </h2>
+                                </div>
+                                <div class="viewAll">
+                                    <a href="javascript:alert('还在开发中哦……');" class="btn btn-default"> 我要留言
+                                        <i class="icon iconfont icon-gengduo"></i>
+                                    </a>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="contpost">
+                        <h2>友情链接</h2>
+                        <div class="flink-list">
+                            <div class="flink-list-item">
+                                <a href="" title="辉哥" target="_blank">
+                                    <img data-url="" onerror="this.onerror=null;this.src=''" alt="Liam's Blog"
+                                         data-ll-status="loaded" class="entered loaded" src="">
+                                    <div class="flink-item-name">ui</div>
+                                    <div class="flink-item-desc">hhhhh</div>
+                                </a>
+                            </div>
+                        </div>
+                        <hr>
+                        <h2>友情申请格式</h2>
+                        <ul class="flink-ul">
+                            <li>网站名称：MyBlog</li>
+                            <li>网址链接：</li>
+                            <li>网站头像：</li>
+                            <li>网站简介：</li>
+                        </ul>
+                        <hr/>
+                        <div id="comments">
+                            <div id="respond-post-cancel-div" class="respond">
+                                <div class="cancel-comments-reply">
+                                    <a id="cancel-comment-reply" href="javascript:;" rel="nofollow"
+                                       style="display: none;" onclick="return TypechoComment.cancelReply();">取消回复</a>
+                                </div>
+                                <h3 id="response" class="comment-reply-title section-title">
+                                    <span><i class="icon iconfont icon-pinglun"></i>发表评论</span>
+                                </h3>
+                                <form id="new_comment_form" method="post" action="javascript:;" _lpchecked="1">
+                                    <input type="hidden" id="article_detail_id" value=""/>
+<!--                                    <div class="comment-overlay">-->
+<!--                                        <div class="comment-overlay-login">-->
+<!--                                            <p>-->
+<!--                                                您必须-->
+<!--                                                <a href="https://graph.qq.com/oauth2.0/show?which=Login&display=pc&response_type=code&client_id=101559500&redirect_uri=https:%2F%2Fcpo.qq.com%2Fconnect%2Fcallback&scope=get_user_info">登录</a>-->
+<!--                                                才能评论哦-->
+<!--                                            </p>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+                                    <div class="comment_triggered" style="display: block;">
+                                        <div class="input_body inp">
+                                            <ul class="ident">
+                                                <li>
+                                                    <input type="email" id="replyEmail" name="email"
+                                                           placeholder="输入邮箱回复提醒（必填）">
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="new_comment">
+                                            <textarea name="text" rows="3" class="textarea_box OwO-textarea"
+                                                      style="height: auto;"
+                                                      placeholder="说点什么吧~" required></textarea>
+                                    </div>
+                                    <div class="input_body bottom">
+                                        <span class="OwO">
+<!--                                            <div class="OwO-logo">-->
+<!--                                                <span>-->
+<!--                                                    <svg viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2454"-->
+<!--                                                         width="30" height="30" stroke="currentColor" stroke-width="2"-->
+<!--                                                         fill="none" stroke-linecap="round" stroke-linejoin="round"-->
+<!--                                                         class="css-i6dzq1">-->
+<!--                                                        <circle cx="12" cy="12" r="10"></circle>-->
+<!--                                                        <path d="M8 14s1.5 2 4 2 4-2 4-2"></path>-->
+<!--                                                        <line x1="9" y1="9" x2="9.01" y2="9"></line>-->
+<!--                                                        <line x1="15" y1="9" x2="15.01" y2="9"></line>-->
+<!--                                                    </svg>-->
+<!--                                                </span>-->
+<!--                                            </div>-->
+<!--                                            <div class="OwO-body" style="width: 70vw">-->
+<!--                                                <div class="OwO-jio"></div>-->
+<!--                                                <ul class="OwO-items OwO-items-image OwO-items-show"-->
+<!--                                                    style="max-height: 197px;">-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id="::(呵呵)" title="呵呵">-->
+<!--                                                        <img class="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                </ul>-->
+<!--                                                <ul class="OwO-items OwO-items-image" style="max-height: 197px;">-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                    <li class="OwO-item" data-id=":*(愤怒)" title="愤怒">-->
+<!--                                                        <img crossorigin="biaoqing" src="">-->
+<!--                                                    </li>-->
+<!--                                                </ul>-->
+<!--                                                <div class="OwO-bar">-->
+<!--                                                    <ul class="OwO-packages">-->
+<!--                                                        <li class="OwO-packages-active">-->
+<!--                                                            <span>泡泡</span>-->
+<!--                                                        </li>-->
+<!--                                                        <li>-->
+<!--                                                            <span>阿呆</span>-->
+<!--                                                        </li>-->
+<!--                                                    </ul>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+                                        </span>
+                                        <input class="comment_submit_button c_button" type="submit" value="提交评论">
+                                    </div>
+                                </form>
+                            </div>
+                            <ol class="comment-list" id="content_load">
+
+                            </ol>
+                            <div class="comment-footer">
+                                <div class="comment-footer-main">
+                                    <div class="item">
+                                        <span class="hide_sm">让大家也知道你的独特见解</span>
+                                        <a href="#comments" class="btn btn-orange-border">立即评论</a>
+                                    </div>
+                                    <div class="item">
+                                        以上留言仅代表用户个人立场，不代表【辉哥】立场
+                                    </div>
+                                </div>
+                                <i class="ji2-icon" data-bubble="yes"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!--底部栏-->
+<footer class="site-footer fsi">
+    <div class="" style="margin-top: 140px;text-align: center;">
+        <div class="footer-lstm" style="color: #FFFFFF">
+            <p>Copyright©2020-2021</p>
+            <p>
+                <a href="" target="_blank" rel="nofollow" style="color: #B4BF42;">湘ICP</a>
+                <a href="" target="_blank" rel="nofollow" style="color: #B4BF42;"><img src="" alt="">湘公网</a>
+            </p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script src="/../lib/jquery-pjax/jquery.pjax.js"></script>
+<script src="/../lib/owo/OwO.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js"></script>
+<script src="/../js/javascript.js"></script>
+<script src="/../js/instantpage.js"></script>
+<script>
+    jQuery(function (a) {
+        var c = "ontouchstart" in window ? "touchstart" : "click";
+        (function () {
+            var b = a(window),
+                e = a("#scroll-to-top");
+            b.scroll(function () {
+                e[100 < b.scrollTop() ? "removeClass" : "addClass"]("hidden")
+            });
+            e.on(c, function (b) {
+                b.preventDefault();
+                a("body, html").animate({
+                    scrollTop: 0
+                }, 500)
+            })
+        })()
+    });
+
+    jQuery(document).ready(function (a) {
+        let flag;
+
+        function c(b, c, d) {
+
+            flag = !0;
+            a(b).click(function () {
+                a(b).prop("class", (flag = !flag) ? c : d)
+            })
+        }
+
+        (function (b, c, d) {
+            flag = !0;
+            a(b).mouseover(function () {
+                a("#aus").prop("class", d)
+            })
+        })("#auStats", "austats_click", "austats_close");
+        (function (b, c) {
+            flag = !0;
+            a(b).mouseleave(function () {
+                a("#aus").prop("class", c)
+            })
+        })("#aus", "austats_click", "austats_close");
+        c("#mStats", "stats_click", "stats_close");
+        c("#mClick", "mobile_click", "mobile_close");
+
+        //以下对于手机端新增  start
+        function mobileC(b, c, d) {
+            flag = !0;
+            a(b).click(function () {
+                a(b).prop("class", (flag = !flag) ? c : d)
+            })
+        }
+
+        (function (b, c, d) {
+            flag = !0;
+            a(b).mouseover(function () {
+                a("#mobileAus").prop("class", d)
+            })
+        })("#mobileAuStats", "austats_click", "austats_close");
+        (function (b, c) {
+            flag = !0;
+            a(b).mouseleave(function () {
+                a("#mobileAus").prop("class", c)
+            })
+        })("#mobileAus", "austats_click", "austats_close");
+        //----end
+
+        (function (b, c, d) {
+            flas = flag = !0;
+            a(b).click(function () {
+                a("#navbar-search").prop("class", (flag = !flag) ? c : d);
+                a("#soico").prop("class", (flas = !flas) ? "icon iconfont icon-sousuo" : "icon iconfont icon-shibai1")
+            })
+        })("#soStats", "navbar-search socollapse sostats soopen", "navbar-search socollapse sostats sooff");
+    });
+
+    <!--滑动条-->
+    $(window).scroll(function () {
+        var a = $(window).scrollTop(),
+            c = $(document).height(),
+            b = $(window).height();
+        scrollPercent = a / (c - b) * 100;
+        scrollPercent = scrollPercent.toFixed(1);
+        $("#percentageCounter").css({
+            width: scrollPercent + "%"
+        })
+    }).trigger("scroll");
+
+    jQuery(document).ready(function (a) {
+        var c = function () {
+            var a = document.createElement("event"),
+                c = {
+                    WebkitTransition: "webkitTransitionEnd",
+                    MozTransition: "transitionend",
+                    transition: "transitionend"
+                },
+                d;
+            for (d in c)
+                if (void 0 !== a.style[d]) return c[d]
+        }();
+        a('[data-toggle\x3d"offcanvas"], .mobile-overlay').click(function () {
+            a(".mobile-overlay").toggleClass("active");
+            a("body").toggleClass("active");
+            a(".row-offcanvas").toggleClass("active");
+            a(".sidebar-offcanvas").toggleClass("active");
+            a(".navbar-toggle").toggleClass("collapsed");
+            a(".navbar-collapse").addClass("transition");
+            a(".collapse").toggleClass("navss");
+            a(".m_nav-list").toggleClass("m_nav-close");
+            a(".transition").one(c, function (b) {
+                a(".navbar-collapse").removeClass("transition")
+            });
+
+            if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
+                a(".g_m_i").appendTo(".mobile-sidebar-column");
+            } else if (/(Android)/i.test(navigator.userAgent)) {
+                a(".g_m_i").appendTo(".mobile-sidebar-column");
+            } else {
+                a(".g_m_i").appendTo(".mobile-sidebar-column");
+            }
+            ;
+
+
+        })
+    });
+
+    function switchNightMode() {
+        "0" == (
+            document.cookie.replace(/(?:(?:^|.*;\s*)night\s*\=\s*([^;]*).*$)|^.*$/, "$1") || "0")
+            ? (document.body.classList.add("sp-dark-mode"),
+                document.getElementById("logo-light").classList.add("d-none"),
+                document.getElementById("logo-dark").classList.remove("d-none"),
+                document.cookie = "night\x3d1;path\x3d/",
+                $('html').attr('dark', true),
+                console.log("5555 \u591c\u95f4\u6a21\u5f0f\u5f00\u542f"))
+            : (document.body.classList.remove("sp-dark-mode"),
+                    document.getElementById("logo-light").classList.remove("d-none"),
+                    document.getElementById("logo-dark").classList.add("d-none"),
+                    document.cookie = "night\x3d0;path\x3d/",
+                    $('html').removeAttr('dark'),
+                    console.log("666666 \u591c\u95f4\u6a21\u5f0f\u5173\u95ed")
+
+            )
+    }
+
+    (function () {
+        if ($(".wb-switch").length > 0) {
+            if ("" === document.cookie.replace(/(?:(?:^|.*;\s*)night\s*\=\s*([^;]*).*$)|^.*$/, "$1"))
+
+                21 < (new Date).getHours() || 6 > (new Date).getHours()
+                    ? (document.body.classList.remove("sp-dark-mode"),
+                        document.getElementById("logo-light").classList.remove("d-none"),
+                        document.getElementById("logo-dark").classList.add("d-none"),
+                        document.cookie = "night\x3d0;path\x3d/",
+                        $('html').removeAttr('dark'),
+                        console.log("77777 \u591c\u95f4\u6a21\u5f0f\u5f00\u542f"))
+                    : (document.body.classList.add("sp-dark-mode"),
+                        document.getElementById("logo-light").classList.add("d-none"),
+                        document.getElementById("logo-dark").classList.remove("d-none"),
+                        document.cookie = "night\x3d1;path\x3d/",
+                        $('html').attr('dark', true),
+                        console.log("88888 \u591c\u95f4\u6a21\u5f0f\u5173\u95ed"));
+            else {
+                var a = document.cookie.replace(/(?:(?:^|.*;\s*)night\s*\=\s*([^;]*).*$)|^.*$/, "$1") || "0";
+                "0" == a ? (document.body.classList.remove("sp-dark-mode"),
+                        document.getElementById("logo-light").classList.remove("d-none"),
+                        document.getElementById("logo-dark").classList.add("d-none"),
+                        $('html').removeAttr('dark'))
+                    : "1" == a && (document.body.classList.add("sp-dark-mode"),
+                    document.getElementById("logo-light").classList.add("d-none"),
+                    document.getElementById("logo-dark").classList.remove("d-none"),
+                    $('html').attr('dark', true))
+            }
+        }
+    })();
+
+    $(document).ready(function () {
+        var navOffw = $(".secnav").width();
+        var navOffh = $(".top-bar").height() * 4;
+        if (navOffw > 750) {
+            var navOffset = $(".secnav").offset().top; //先得到据顶部的距离
+            $(window).scroll(function () {
+                var scrollPos = $(window).scrollTop(); //得到滚动的距离
+                if (scrollPos >= navOffh) { //比较判断是否fixed
+                    $(".secnav").stop().slideUp();
+                    $("#post_top_title").removeClass("post_no");
+                    if ($("#post_top_title").length > 0) {
+                        $(".top-bar-navigation").addClass("post_no");
+                    }
+                } else {
+                    $(".secnav").stop().slideDown();
+                    $("#post_top_title").addClass("post_no");
+                    $(".top-bar-navigation").removeClass("post_no");
+                    $(".top_so").removeClass("top_ac");
+                }
+            })
+        }
+    })
+</script>
+<script>
+
+    $('#newblog-container').load(/*[[@{/footer/newblog}]]*/"/footer/newblog");
+
+    <!--滑动条-->
+    $(window).scroll(function () {
+        var a = $(window).scrollTop(),
+            c = $(document).height(),
+            b = $(window).height();
+        scrollPercent = a / (c - b) * 100;
+        scrollPercent = scrollPercent.toFixed(1);
+        $("#percentageCounter").css({
+            width: scrollPercent + "%"
+        })
+    }).trigger("scroll");
+</script>
+<script>
+    layui.use(['flow', 'code', 'layer'], function () {
+        var flow = layui.flow
+            , layer = layui.layer
+            , $ = layui.jquery; //不用额外加载jQuery，flow模块本身是有依赖jQuery的，直接用即可。
+
+        function renderTime(date) {
+            var datee = new Date(date).toJSON();
+            return new Date(+new Date(datee) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '')
+        }
+
+        function diffDate(dateTimeStamp) {
+            dateTimeStamp = renderTime(dateTimeStamp).replace(/-/g, "/");
+            dateTimeStamp = new Date(dateTimeStamp).getTime();
+            var minute = 1000 * 60, hour = minute * 60, day = hour * 24, halfamonth = day * 15, month = day * 30,
+                year = month * 12, now = new Date().getTime(), diffValue = now - dateTimeStamp;
+            if (diffValue < 0) {
+                //若日期不符则弹出窗口告之
+                //alert("结束日期不能小于开始日期！");
+            }
+            var yearC = diffValue / year, monthC = diffValue / month, weekC = diffValue / (7 * day),
+                dayC = diffValue / day, hourC = diffValue / hour, minC = diffValue / minute;
+            var result;
+            if (yearC >= 1) {
+                result = parseInt(yearC) + " 年前";
+            } else if (monthC >= 1) {
+                result = parseInt(monthC) + " 个月前";
+            } else if (weekC >= 1) {
+                result = parseInt(weekC) + " 周前";
+            } else if (dayC >= 1) {
+                result = parseInt(dayC) + " 天前";
+            } else if (hourC >= 1) {
+                result = parseInt(hourC) + " 小时前";
+            } else if (minC >= 1) {
+                result = parseInt(minC) + " 分钟前";
+            } else {
+                result = "刚刚";
+            }
+            return result;
+        }
+
+        let totalPage = 1
+
+        //流加载数据
+        flow.load({
+            elem: '#content_load' //流加载容器
+            , scrollElem: '#content_load' //滚动条所在元素，一般不用填，此处只是演示需要。
+            , isAuto: false
+            , isLazyimg: true
+            , end: '<div class="#comment-nomore">没有更多评论了</div>'
+            , done: function (page, next) { //加载下一页
+                var lis = [];
+                $.post("comments", {pageIndex: page, pageSize: 1}, function (res) {
+                    //console.log('----------flow message------------------');
+                    //console.log(res)
+                    var data = res.data;
+                    totalPage = res.totalPage;//总页数
+                    var currentPage = res.currentPage;//当前页
+                    for (let i = 0; i < data.length; i++) {
+
+                        let childCommentDiv = '';
+                        if (data[i].children.length !== 0) {
+                            var children = data[i].children;
+
+                            childCommentDiv = '<div class="comment-children">' +
+                                '               <ol class="comment-list">';
+
+                            for (var p = 0; p < children.length; p++) {
+                                let childAuthor = ''
+                                if (children[p].userid === 8) {
+                                    childAuthor = '<span class="author badge badge-secondary">作者</span>'
+                                }
+                                childCommentDiv += '<li id="li-comment-' + children[p].id + '" class="comment comment-child comment-level-odd comment-odd comment-by-author">' + '                                                ' +
+                                    '<div id="comment-' + children[p].id + '" class="comment-body">' +
+                                    '<div class="comment-author">' +
+                                    '<img src="' + children[p].headurl + '"  class="avatar child-avatar">' + children[p].nickname +
+                                    childAuthor +
+                                    '<span class="says"> 回复 ' + children[p].replyNickName + '：</span>' +
+                                    '</div>' +
+                                    '<div class="comment-meta">' +
+                                    diffDate(children[p].createTime) +
+                                    '</div>' +
+                                    '<p>' +
+                                    children[p].content +
+                                    '</p>' +
+                                    '<div class="reply">' +
+                                    '<span class="comment-reply-link">' +
+                                    '<a href="jascript:;" rel="nofollow" onclick="return TypechoComment.reply(\'comment-' + children[p].id + '\', ' + children[p].id + ',\'' + children[p].nickname + '\',' + data[i].id + ');">回复</a>' +
+                                    '</span>' +
+                                    '</div>' +
+                                    '</div>' +
+                                    '</li>';
+                            }
+                            childCommentDiv += '</ol>' +
+                                '</div>';
+                        } else {
+                            html = '';
+                            style = '';
+                            childCommentDiv = '';
+                        }
+
+                        let author = ''
+                        if (data[i].userid === 8) {
+                            author = '<span class="author badge badge-secondary">作者</span>'
+                        }
+
+                        let commentDiv =
+                            '<li id="li-comment-' + data[i].id + '" class="comment comment-parent comment-odd">' +
+                            '<div id="comment-' + data[i].id + '" class="comment-body">' +
+                            '<div class="comment-author">' +
+                            '<img src="' + data[i].headurl + '" width="40px" height="40px" class="avatar">' +
+                            data[i].nickname + author +
+                            '<span class="says"> 评论：</span>' +
+                            '</div>' +
+                            '<div class="comment-meta">' +
+                            diffDate(data[i].createTime) +
+                            '</div>' +
+                            '<p>' +
+                            data[i].content +
+                            '</p>' +
+                            '<div class="reply">' +
+                            '<span class="comment-reply-link">' +
+                            '<a href="javascript:;" rel="nofollow" onclick="return TypechoComment.reply(\'comment-' + data[i].id + '\', ' + data[i].id + ',\'' + data[i].nickname + '\',' + data[i].id + ');">回复</a>' +
+                            '</span>' +
+                            '</div>' +
+                            '</div>' + childCommentDiv +
+                            '</li>';
+                        lis.push(commentDiv);
+                    }
+                    next(lis.join(''), currentPage < totalPage);
+                });
+            }
+        });
+
+
+        function escape(html) {
+            return String(html || '').replace(/&(?!#?[a-zA-Z0-9]+;)/g, '&amp;')
+                .replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+        }
+
+        function html2Text(content) {
+            //支持的html标签
+            var html = function (end) {
+                return new RegExp('\\[' + (end || '') + '(pre|div|table|thead|th|tbody|tr|td|ul|li|ol|li|dl|dt|dd|h2|h3|h4|h5)\\]\\n*', 'g');
+            };
+            content = escape(content || '') //XSS
+                .replace(/img\[([^\s]+?)\]/g, function (img) {  //转义图片
+                    return '<img src="' + img.replace(/(^img\[)|(\]$)/g, '') + '">';
+                }).replace(/@(\S+)(\s+?|$)/g, '@<a href="javascript:;" class="fly-aite">$1</a>$2') //转义@
+                .replace(/face\[([^\s\[\]]+?)\]/g, function (face) {  //转义表情
+                    var alt = face.replace(/^face/g, '');
+                    return '<img alt="' + alt + '" title="' + alt + '" src="' + edit.faces[alt] + '">';
+                }).replace(/a\([\s\S]+?\)\[[\s\S]*?\]/g, function (str) { //转义链接
+                    var href = (str.match(/a\(([\s\S]+?)\)\[/) || [])[1];
+                    var text = (str.match(/\)\[([\s\S]*?)\]/) || [])[1];
+                    if (!href) return str;
+                    var rel = /^(http(s)*:\/\/)\b(?!(\w+\.)*(sentsin.com|layui.com))\b/.test(href.replace(/\s/g, ''));
+                    return '<a href="' + href + '" target="_blank"' + (rel ? ' rel="nofollow"' : '') + '>' + (text || href) + '</a>';
+                }).replace(html(), '\<$1\>').replace(html('/'), '\</$1\>') //转移代码
+                .replace(/\n/g, '<br>') //转义换行
+            return content;
+        }
+
+        //提交文章评论
+        $('.comment_submit_button').on('click', function () {
+            var content = $.trim($('.textarea_box').val());
+            var id = $('#article_detail_id').val();
+            let replyId = $('#comment-reply-id').val()
+            let replyNickname = $('#comment-reply-pnickname').val();
+            let parentId = $('#comment-reply-parent-id').val();
+
+            let replyEmail = $('#replyEmail').val();
+            if (replyEmail === '') {
+                layer.msg('请填写邮箱！', {icon: 5});
+                return
+            }
+
+            let param = null;
+            if (undefined !== replyId && undefined !== replyNickname && undefined !== parentId) {
+                param = parentId + ',' + replyId + ',' + replyNickname
+            }
+
+            content = html2Text(content);
+            //提交
+            var common_index = layer.msg('发表评论中，请稍候', {icon: 16, time: false, shade: 0.8});
+            // $.post('message/add',{content:content,article_id:id,param:param},function (res) {
+            var param2 = {
+                //articleId:id,
+                content: content,
+                param: param,
+                email: replyEmail === '' ? null : replyEmail
+            }
+            $.ajax({
+                url: '/comments',
+                /*xhrFields: {
+                    withCredentials: !0
+                },*/
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json;charset=UTF-8',
+                data: JSON.stringify(param2),
+                success: function (res) {
+                    console.log(res);
+
+                    if (res.code === 1) {
+                        layer.close(common_index);
+                        layer.msg(res.msg, {
+                            time: 1000,
+                            icon: 1
+                        }, function () {
+                            window.location.reload();
+                        })
+                    } else {
+                        layer.close(common_index);
+                        layer.msg(res.msg, {
+                            icon: 2
+                        });
+                    }
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

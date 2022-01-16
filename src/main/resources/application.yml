@@ -1,0 +1,33 @@
+server:
+  port: 8080
+  max-http-header-size: 8192
+  compression:
+    min-response-size: 512
+    enabled: true
+    mime-types: text/html,text/css,text/javascript,application/javascript,image/gif,image/png,image/jpeg
+  tomcat:
+    threads:
+      max: 10
+      min-spare: 3
+spring:
+  #配置thymeleaf模板
+  thymeleaf:
+    mode: HTML
+  profiles:
+    active: dev
+  datasource:
+    # Hikari 连接池配置
+    hikari:
+      minimum-idle: 5  # 最小空闲连接数量
+      maximum-pool-size: 5  # 连接池最大连接数，默认是10
+      max-lifetime: 1800000  # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      connection-test-query: SELECT 1
+
+#配置评论头像
+
+
+mybatis:
+  type-aliases-package: com.myblog.entity
+  mapper-locations: classpath:mapper/*xml
+  configuration:
+    map-underscore-to-camel-case: true

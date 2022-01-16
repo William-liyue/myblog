@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style type="text/css">
+    * {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .cle:after {
+      height: 0;
+      clear: both;
+      visibility: hidden;
+      display: none;
+      content: "";
+    }
+
+    .bbslist {
+      width: 400px;
+      margin: 10px auto;
+      border-radius: 5px;
+      background: #A6A6A6;
+      border: 1px solid #a6a6a6;
+    }
+
+    .bbslist>ul {
+      margin: 8px 10px 10px 10px;
+      display: block;
+      clear: both;
+      text-align: center;
+      box-shadow: 3px 3px 25px #A6A6A6;
+    }
+
+    .bbslist>ul>li {
+      background: #f4f4f4;
+      margin: 10px 0;
+      line-height: 30px;
+      height: 30px;
+      border-radius: 5px;
+      text-align: center;
+      box-shadow: 3px 3px 17px #A6A6A6;
+      padding: 0 5px;
+      font-size: 12px;
+      border: 1px solid #a6a6a6;
+      position: relative;
+      transition: all 0.5s;
+      animation: liBg 0.3s;
+      overflow: hidden;
+    }
+
+    @keyframes liBg {
+      from {
+        background: #442222;
+        opacity: 0;
+        left: -20px;
+        height: 0;
+      }
+
+      to {
+        background: #f4f4f4;
+        opacity: 1;
+        left: 0;
+        height: 30px;
+      }
+    }
+
+    .mesDiv {
+      width: 400px;
+      background: #eee;
+      height: 130px;
+      border: 1px solid #a6a6a6;
+      margin: 20px auto;
+      border-radius: 5px;
+      box-shadow: 3px 3px 17px #A6A6A6;
+      animation: msgHeight 0.5s;
+      overflow: hidden;
+    }
+
+    @keyframes msgHeight {
+      from {
+        height: 0;
+        margin-top: 50px;
+        opacity: 0;
+      }
+
+      to {
+        height: 130px;
+        margin-top: 20px;
+        opacity: 1;
+      }
+    }
+
+    .inputSty {
+      width: 90%;
+      height: 30px;
+      display: block;
+      color: #666;
+      border: 1px solid #ddd;
+      padding-left: 5px;
+      line-height: 30px;
+      font-size: 12px;
+      clear: both;
+      margin: 10px auto;
+      border-radius: 5px;
+    }
+
+    .btnSty {
+      width: 30%;
+      height: 25px;
+      margin: 0 auto;
+      display: block;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-radius: 5px;
+      box-shadow: 3px 3px 10px #A6A6A6;
+    }
+
+    .btnSty:hover {
+      width: 20%;
+      height: 30px;
+      border-radius: 5px;
+      box-shadow: 3px 3px 10px #A6A6A6;
+    }
+
+    .userSty {
+      width: 25%;
+      height: 25px;
+      margin: 8px 18px 3px 18px;
+      border-radius: 5px;
+      box-shadow: 3px 3px 10px #A6A6A6;
+    }
+
+    .dd {
+      width: 135px;
+      height: 10px;
+      position: relative;
+      top: -10px;
+      font-size: 8px;
+      float: right;
+      clear: both;
+    }
+
+    .delbtn{
+      width: 35px;
+      height: 22px;
+      border-radius: 5px;
+      position: relative;
+      top: 5px;
+      right: -4px;
+      float: right;
+      z-index: 2;
+      color: red;
+      /* box-shadow: 2px 2px 3px  #A6A6A6; */
+    }
+  </style>
+</head>
+
+<body>
+<div class="mesDiv">
+  <input id="userId" class="userSty" type="button" value="您的姓名">
+  <input id="msgId" class="inputSty" type="text" placeholder="">
+  <input id="btnId" class="btnSty" type="button" value="提交留言">
+</div>
+
+<div class="bbslist cle" id="masMan">
+  <ul id="ulId">
+    <li>—&nbsp;—&nbsp;—&nbsp;留言列表&nbsp;—&nbsp;—&nbsp;—</li>
+  </ul>
+</div>
+<script type="text/javascript">
+  //定义一个函数用来重复获取gId("value"),中value的ID属性
+  function gId(n) {
+    return document.getElementById(n);
+  }
+  //获取姓名
+  gId("userId").onclick = function () {
+    var username = prompt("请输入您的姓名:");
+    alert("您好！" + username + "。");
+    gId("userId").value = username + "的留言：";
+  }
+  //删除留言
+  function delMsg(d) {
+    var parentUl = d.parentNode;
+    var parentDiv = parentUl.parentNode;
+    parentDiv.removeChild(parentUl);
+  }
+  //提交留言
+  gId('btnId').onclick = function () {
+    //获取时间
+    var today = new Date();
+    var year = today.getFullYear();
+    var month = today.getMonth() + 1;
+    var day = today.getDate();
+    var hours = today.getHours();
+    var min = today.getMinutes();
+    var second = today.getSeconds();
+    var time = year + "年" + month + "月" + day + "日" + " " + hours + "时" + min + "分" + second + "秒";
+    // var v = ;
+    if (gId('msgId').value === '') {
+      alert("留言不能为空");
+      return false;
+    }
+    //创建li
+    else {
+      //创建一个新元素ul
+      var ulcrate = document.createElement('ul');
+      //创建新元素li
+      var licrate = document.createElement('li');
+      //创建一个时间盒子
+      var divcrate = document.createElement('div');
+      //创建一个删除按钮
+      var delbtn = document.createElement('input');
+      //给删除按钮赋属性
+      delbtn.setAttribute('type', 'button');
+      delbtn.setAttribute('class', 'delbtn');
+      delbtn.setAttribute('value', '删除');
+      delbtn.setAttribute('onclick', 'delMsg(this)');
+      //给创建的ul赋属性
+      ulcrate.setAttribute('id', 'ulId');
+
+      //给时间盒子设置属性
+      // divcrate.setAttribute('class', 'dd');
+      divcrate.className = "dd";
+      //向li里添加在输入框中获取的值
+      licrate.innerHTML = gId('msgId').value;
+
+
+      //把，删除按钮，留言内容，时间盒子添加到创建的ul里
+      ulcrate.appendChild(delbtn);
+      ulcrate.appendChild(licrate);
+      ulcrate.appendChild(divcrate);
+      //给时间盒子传递时间
+      divcrate.innerHTML = time;
+      //把创建的ul添加到最外层的div里
+      gId('masMan').appendChild(ulcrate);
+      //留言内容初始化
+      gId("msgId").value = "";
+    }
+  }
+</script>
+</body>
+</html>

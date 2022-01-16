@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myblog.mapper.TypeMapper">
+
+    <!--新增保存分类-->
+    <insert id="saveType" parameterType="com.myblog.entity.Type">
+        insert into myblog.t_type (id, name, typename)
+        values (#{id},#{name},#{typename});
+    </insert>
+
+    <!--根据id,name查询分类-->
+    <select id="getType" resultType="com.myblog.entity.Type">
+        select id,name
+        from myblog.t_type
+        where id = #{id}
+    </select>
+
+    <!--查询所有分类-->
+    <select id="getAllType" resultType="com.myblog.entity.Type">
+        select * from myblog.t_type
+    </select>
+
+    <resultMap id="type" type="com.myblog.entity.Type">
+        <id property="id" column="tid"/>
+        <result property="name" column="name"/>
+        <result property="typename" column="typename"/>
+        <collection property="blogs" ofType="com.myblog.entity.Blog">
+            <id property="id" column="bid"/>
+            <result property="title" column="title"/>
+            <result property="typeId" column="typeId"/>
+        </collection>
+    </resultMap>
+
+    <!--分类页面查询-->
+    <select id="getAllTypeAndBlog" resultMap="type">
+        select t.id tid,t.name,t.typename,b.id bid,b.title,b.typeId
+        from myblog.t_type t,myblog.t_blog b
+        where t.id = b.id
+    </select>
+
+    <!--根据名称来查询-->
+    <select id="getTypeByName" resultType="com.myblog.entity.Type">
+        select * from myblog.t_type where name = #{name}
+    </select>
+
+    <!--根据分类来查询-->
+    <select id="getTypeName" resultType="com.myblog.entity.Type">
+        select * from myblog.t_type where typename = #{typename}
+    </select>
+
+    <!--编辑修改分类-->
+    <update id="updateType" parameterType="com.myblog.entity.Type">
+        update myblog.t_type set name = #{name} and typename = #{typename} where id = #{id}
+    </update>
+
+    <!--删除分类-->
+    <delete id="deleteType">
+        delete from myblog.t_type where id = #{id}
+    </delete>
+</mapper>

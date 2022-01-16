@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>博客管理登录</title>
+    <link href="/static/images/" th:href="@{/favicon.ico}" rel="icon" type="image/x-ico">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/css/bootstrapValidator.min.css"/>
+    <link rel="stylesheet" href="/../../css/style.css">
+    <link rel="stylesheet" href="/../../css/iconfont.css">
+    <style type="text/css">
+        .form-signin {
+            max-width: 500px;
+            margin-top: 200px;
+            background-color: #FFFFFF;
+            padding: 15px 40px 50px;
+            border: 1px solid #e5e5e5;
+            border-radius: 10px;
+        }
+        .form-signin .form-signin-heading {
+            margin-bottom: 20px;
+        }
+        .form-floating {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid" style="max-width: 30em !important;max-height: 200em !important;">
+    <main class="form-signin" style="margin-top: 150px">
+        <h2 class="form-signin-heading text-center">管理后台登录</h2>
+        <form id="login_form" class="container-fluid" method="post" action="#" th:action="@{/admin/login}">
+            <div class="form-floating">
+                <input type="text" class="form-control required" id="username" name="username" placeholder="用户名:">
+                <label for="username">用户名:</label>
+            </div>
+            <div class="form-floating">
+                <input type="password" class="form-control required" id="password" name="password" placeholder="密码:">
+                <label for="password">密码:</label>
+            </div>
+            <div class="checkbox">
+                <label class="form-check-label" for="recommend">
+                    <input class="form-check-input hidden" type="checkbox" id="recommend" value="1"/> 记住我
+                </label>
+            </div>
+            <div class="input-group">
+                <div class="form-group form-floating">
+                    <button type="submit" class="btn btn-success pull-right" onclick="checkLogin()">登   录</button>
+                </div>
+            </div>
+            <div class="form-group form-floating">
+                <button class="btn btn-success pull-left"><a href="/myblog/register.html">创建账号</a></button>
+            </div>
+            <div>
+                <a href="https://graph.qq.com/oauth2.0/show?which=Login&display=pc&response_type=code&client_id=101559500&redirect_uri=https:%2F%2Fcpo.qq.com%2Fconnect%2Fcallback&scope=get_user_info" target="_self">
+                    <img src="https://qzonestyle.gtimg.cn/qzone/vas/opensns/res/img/Connect_logo_7.png">
+                    <span id="login"></span>
+                </a>
+            </div>
+            <div class="error message"></div>
+            <div class="form-floating">
+                <div class="text-center negative message" th:unless="${#strings.isEmpty(message)}" th:text="${message}">
+                    <h5 style="color: #FF1717">用户名或密码错误</h5>
+                </div>
+            </div>
+        </form>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.2/dist/jquery.min.js"></script>
+<script type="text/javascript" src="http://connect.qq.com/qc_jssdk.js" charset="utf-8" data-appid="APPID" data-redirecturi="REDIRECTURI"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.2/js/bootstrapValidator.min.js"></script>
+<script type="text/javascript" src="//connect.qq.com/qc_jssdk.js" charset="utf-8" data-callback="true"></script>
+<script src="/../../lib/bootstrap-5.1.3/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    /*function login() {
+        // 以下为按钮点击事件的逻辑，注意这里要重新打开窗口
+        // 否则后面跳转到QQ登录，授权页面时会直接缩小当前浏览器的窗口，而不是打开新的窗口
+        var A=window.open("oauth/index.php","TencentLogin", "width=450,height=320,menubar=0,scrollbars=1," +
+            "resizable=1,status=1,titlebar=0,toolbar=0,location=1");
+    }*/
+    QC.login({
+        btnId: "login",        // 插入按钮的节点id
+        scope: "all",        // 用户需要确认的scope授权项，可选，默认all
+        size: "A_XL"        // 按钮尺寸，可用值[A_XL| A_L| A_M| A_S|  B_M| B_S| C_S]，可选，默认B_S
+    }, function (reqData, opts) {        // 登录成功
+        // 根据返回数据，更换按钮显示状态方法
+        var dom = document.getElementById(opts['btnId']),
+            _logoutTemplate = [
+                // 头像
+                '<span><img src="{figureurl}" class="{size_key}" /></span>',
+                // 昵称
+                '<span>{nickname}</span>',
+                // 退出
+                '<span><a href="javascript:QC.login.signOut();">退出</a></span>'
+            ].join("");
+        dom && (dom.innerHTML = QC.String.format(_logoutTemplate, {
+            nickname : QC.String.escHTML(reqData.nickname), // 做xss过滤
+            figureurl : reqData.figureurl
+        }));
+        }, function (opts) { // 注销成功
+            alert('QQ登录 注销成功');
+        }
+    );
+</script>
+<script type="text/javascript">
+    function checkLogin() {
+        var username=document.username.value;
+        var password=document.password.value;
+        var flag=false;
+        if(username === "") {
+            var user=document.getElementById("user");
+            user.innerHTML="用户名不能为空";
+            flag=true;
+        } else if(password === "") {
+            flag=true;
+            var passwd=document.getElementById("passwd");
+            passwd.innerHTML="密码不能为空";
+        }else if(flag){
+            return false;
+        }
+        return true;
+    }
+</script>
+<script>
+    var path = "${pageContext.request.contextPath}";
+    $(function () {
+        getCookie();//获取cookie
+        remeberNameAndPwd();//rememberMe点击事件
+        validate();//校验与登录
+    });
+
+    function validate(){
+        $('#login_form').buttons({
+            fields: {
+                username: {
+                    message: '用户名验证失败',
+                    validators: {
+                        notEmpty: {
+                            message: '用户名不能为空'
+                        }
+                    }
+                },
+                password: {
+                    validators: {
+                        notEmpty: {
+                            message: '密码不能为空'
+                        }
+                    }
+                }
+            }
+        }).on('success.form.bv', function(e) {
+            $("#form").submit(function(){
+                var flag = $('#form').data("bootstrapValidator").isValid();//校验合格
+                if(flag){
+                    var load = top.layer.load();
+                    var $form = $('#form');
+                    $.ajax({
+                        url:$form.attr('action'),
+                        data:$form.serialize(),
+                        type:'post',
+                        beforeSend:function(){
+                            layer.msg('正在登录');
+                        },
+                        success:function(data){
+                            if(data == "success"){
+                                setTimeout(function(){
+                                    layer.close(load);
+                                    layer.msg('登录成功');
+                                    setAndRemoveCookie();//是否写入cookie
+                                },1000);
+                                setTimeout(function(){
+                                    //登录返回
+                                    window.location.href=path+'/register/get.do';
+                                },2000);
+                            }else{
+                                setTimeout(function(){
+                                    layer.close(load);
+                                    layer.msg('身份验证失败,请检查用户名或密码是否正确!',{
+                                        time:3500 //3.5秒钟之后关闭
+                                    });
+                                },1000);
+                            }
+                        },
+                        error:function(e){
+                            console.log(e);
+                            layer.msg('出错咯o(╥﹏╥)o,请与后台联系!',{
+                                btn:'我知道了'
+                            })
+                        }
+                    })
+                }
+            })
+        });
+    }
+    //记住用户名,默认不记住
+    var checkFlag = false;
+
+    function remeberNameAndPwd(){
+        //这里是当页面是从注册页面注册成功过来
+        var remFlag = $("input[type='checkbox']").is(":checked");
+        if(remFlag==true){
+            checkFlag = true;
+        }
+        //当在login.jsp页面点击是否记住
+        $("#recommend").click(function(){
+            var remFlag = $("input[type='checkbox']").is(":checked");
+            if(remFlag==true){
+                $("#recommend").attr("checked",true);
+                checkFlag=true;
+            }else{
+                $("#recommend").attr("checked",false);
+                checkFlag=false;
+            }
+        })
+    }
+
+    //写入cookie与删除
+    function setAndRemoveCookie(){
+        //注意 密码写入cookie的时候这里没有写加密 是不安全的
+        if(checkFlag){
+            var username = $("#username").val();
+            var password = $("#password").val();
+            $.cookie("remember","true",{expires : 7 })//单位：天
+            $.cookie("username",username,{expires: 7 });
+            $.cookie("password",password,{expires: 7 })
+            console.log($.cookie("username"));
+        }else{
+            //删除cookie
+            $.cookie("remember","false",{expires:-1 });
+            $.cookie("username",null,{expires:-1});
+            $.cookie("password",null,{expires:-1});
+            console.log($.cookie("password"));
+        }
+    }
+    //获取cookie
+    function getCookie(){
+        if($.cookie("recommend")=="true"){
+            $("#recommend").attr("checked",true);
+            $("#username").val($.cookie("username"));
+            $("#password").val($.cookie("password"));
+            console.log($.cookie("password"));
+        }
+    }
+</script>
+</body>
+</html>
