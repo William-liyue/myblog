@@ -1,33 +1,82 @@
+# 指定服务端口号，以及文件上传临时存储问题
 server:
   port: 8080
-  max-http-header-size: 8192
-  compression:
-    min-response-size: 512
-    enabled: true
-    mime-types: text/html,text/css,text/javascript,application/javascript,image/gif,image/png,image/jpeg
   tomcat:
-    threads:
-      max: 10
-      min-spare: 3
+    basedir: /data/apps/temp
 spring:
-  #配置thymeleaf模板
-  thymeleaf:
-    mode: HTML
-  profiles:
-    active: dev
+  application:
+    name: myblog
   datasource:
-    # Hikari 连接池配置
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/myblog?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT
+    username: root
+    password: root
+    dbcp2:
+      validation-query: SELECT 1
+      connection-properties: UTF-8
+      test-on-borrow: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 3600000
+      initial-size: 5
+      max-wait-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      min-idle: 5
+      pool-prepared-statements: true
     hikari:
-      minimum-idle: 5  # 最小空闲连接数量
-      maximum-pool-size: 5  # 连接池最大连接数，默认是10
-      max-lifetime: 1800000  # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
-      connection-test-query: SELECT 1
+      max-lifetime: 500000
+  thymeleaf:
+    prefix: classpath:/templates/
+    check-template-location: true
+    encoding: utf-8
+    cache: false
+    mode: .html
+  mail:
+    host: smtp.163.com
+    username: emple_3usoft@163.com
+    password: # 授权第三方登录的授权码
+    protocol: smtps
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.port: 994 #465或者994
+    properties.mail.smtp.starttls.enable: true
+    properties.mail.smtp.starttls.required: true
+    properties.mail.smtp.ssl.enable: true
+    default-encoding: utf-8
 
-#配置评论头像
+# 日志存储位置，以及debug级别日志输出路径
+logging:
+  path: /data/myblog/log
+   level:
+    root: info
+      com:
+      myblog:
+        mapper: debug
+  file:
+    name: log/myblog-dev.log
 
-
+# 指定mapper位置
 mybatis:
-  type-aliases-package: com.myblog.entity
-  mapper-locations: classpath:mapper/*xml
-  configuration:
-    map-underscore-to-camel-case: true
+  type-aliases-package: com.myblog.model.entity
+  mapper-locations: classpath:mapper/*.xml
+
+# 是否开启kafka和swagger
+zhangjianbing:
+  web:
+    logging:
+      kafka:
+        enabled: false # 是否推送日志到kafka
+        broker: 127.0.0.1:9092
+        env: prod
+    swagger:
+      enabled: false  # 是否开启swagger，生产环境关闭
+      description: myblog
+      basePackage: com.myblog.controller
+      version: v1.0
+      contact:
+        name: myblog
+        url: https://www.zhangjianbing.com
+        email: zhangjianbing777@163.com
+# 数据库加密秘钥
+jasypt:
+  encryptor:
+    password: root

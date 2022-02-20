@@ -1,67 +1,118 @@
 package com.myblog.service;
 
-import com.myblog.util.Page;
-import com.myblog.entity.Comment;
-import org.springframework.cache.annotation.Cacheable;
+
+import com.github.pagehelper.PageInfo;
+import com.myblog.model.entity.Comments;
 
 import java.util.List;
 
 /**
- * 博客评论业务层接口
- * @author li192
+ * Description:评论接口
+ * Author:70kg
+ * Param
+ * Return
+ * Date 2018/5/9 11:16
  */
-public interface CommentService {
+public interface ICommentService {
 
     /**
-     * 查找某文章下的评论数
-     * @param id
-     * @return
+     * Description:查询评论的数量
+     * Author:70kg
+     * Param []
+     * Return int
+     * Date 2018/5/9 11:48
      */
-    int findCommentCount(Integer id);
-
-    @Deprecated
-    boolean addComment(Comment comment);
+    int selectCommentCount();
 
     /**
-     * 以分页形式显示文章的评论列表或留言列表
-     * @param articleId
-     * @param pageNow
-     * @param pageSize
-     * @return
+     * Description:根据id来查询评论
+     * Author:70kg
+     * Param [id]
+     * Return Comments
+     * Date 2018/5/9 11:48
      */
-    @Deprecated
-    Page<Comment> findAll(Integer articleId,Integer pageNow, Integer pageSize);
+    Comments selectCommentByid(Integer id);
 
     /**
-     * 用于添加文章评论
-     * @param comment
-     * @return
+     * Description:获取最新评论
+     * Author:70kg
+     * Param [page, limit]
+     * Return com.github.pagehelper.PageInfo<Comments>
+     * Date 2018/5/9 15:10
      */
-    boolean addArticledComment(Comment comment);
+    PageInfo<Comments> selectNewComments(Integer page, Integer limit);
+
+//    List<Comments> selectNewComments(Integer page, Integer limit);
 
     /**
-     * 用于添加留言
-     * @param comment
-     * @return
+     * Description:保存评论
+     * Author:70kg
+     * Param [comment]
+     * Return int
+     * Date 2018/5/9 15:10
      */
-    boolean addLevelComment(Comment comment);
+    int saveComments(Comments comment);
 
     /**
-     * 用于查找某篇文章下的所有评论  并分页
-     * @param articleId
-     * @param pageNow
-     * @param pageSize
-     * @return
+     * Description:根据id删除评论
+     * Author:70kg
+     * Param [id]
+     * Return String
+     * Date 2018/5/9 15:12
      */
-    @Deprecated
-    Page<Comment> findArticledCommentAll(Integer articleId, Integer pageNow, Integer pageSize);
+    String delCommentById(Integer id);
 
     /**
-     * 用于查找所有留言  并分页
-     * @param pageNow
-     * @param pageSize
-     * @return
+     * Description:查询非自己的评论
+     * Author:70kg
+     * Param [authorId]
+     * Return java.util.List<Comments>
+     * Date 2018/5/10 14:10
      */
-    Page<Comment> findLevelCommentAll(Integer pageNow,Integer pageSize);
+    List<Comments> selectCommentsByAuthorId(Integer authorId);
 
+    /**
+     * Description:根据文章的id来获取改文章下面的评论
+     * Author:70kg
+     * Param [contentId, page, limit]
+     * Return com.github.pagehelper.PageInfo<Comments>
+     * Date 2018/5/11 16:14
+     */
+    PageInfo<Comments> getCommentsListByContentId(Integer contentId, Integer page, Integer limit);
+
+    /**
+     * Description:保存评论并返回结果
+     * Author:70kg
+     * Param [comment]
+     * Return java.lang.String
+     * Date 2018/5/11 17:16
+     */
+    String insertComment(Comments comment);
+
+    /**
+     * Description:根据id来更新评论
+     * Author:70kg
+     * Param [id]
+     * Return void
+     * Date 2018/5/16 13:29
+     */
+    void updateCommentById(Integer id);
+
+    /**
+     * Description:查询为审核的评论
+     * Author:70kg
+     * Param []
+     * Return java.util.List<Comments>
+     * Date 2018/5/16 13:33
+     */
+    List<Comments> getNotAuditComments();
+
+    /**
+     * Description: 更新评论
+     * Author:70KG
+     * Param [comObj]
+     * Return void
+     * Date 2018/8/16 16:58
+     */
+    void updateComment(Comments comObj);
 }

@@ -1,21 +1,48 @@
 package com.myblog.service;
 
-import com.myblog.entity.User;
-import org.apache.ibatis.annotations.Param;
+import com.myblog.model.entity.User;
 
 /**
- * 用户业务层接口
- * @author li192
+ * @author itachi
+ * @Title: IUserService
+ * @Description: user接口
+ * @date 2018/5/8下午10:30
  */
-public interface UserService {
+public interface IUserService {
 
     /**
-     * 根据用户名密码查找对应的用户
-     * @param password
-     * @param username
-     * @return
+     * Description: 用户的登录接口
+     * author: itachi
+     * Date: 2018/5/8 下午10:41
      */
-    User findOne(@Param("username") String username,@Param("password") String password);
+    User userLogin(String username, String password);
 
-    User findByName(String username);
+    /**
+     * Description: 保存user
+     * author: itachi
+     * Date: 2018/5/10 下午10:39
+     */
+    void saveUser(User user);
+
+    /**
+     * Description: 根据用户名来查询用户
+     * author: itachi
+     * Date: 2018/5/10 下午10:39
+     */
+    User selectUserByUsername(String username);
+
+    /**
+     * Description: 更新用户信息
+     * author: itachi
+     * Date: 2018/5/10 下午10:40
+     */
+    boolean updateUser(User user);
+
+    /**
+     * Description: 根据id来查询用户
+     * author: itachi
+     * Date: 2018/5/10 下午10:43
+     */
+    User selectUserById(Integer id);
+
 }
