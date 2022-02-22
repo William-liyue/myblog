@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin")
 @Api(value = "用户登录登出Controller")
 @Slf4j(topic = "AuthController")
-public class AuthController extends BaseController {
+public class LoginController extends BaseController {
 
     /**
      * 登录页面
@@ -43,15 +43,15 @@ public class AuthController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "username", value = "用户名", required = true, dataType = "String"),
             @ApiImplicitParam(name = "password", value = "用户密码", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "rememberMe", value = "记住我", required = false, dataType = "String")
+            @ApiImplicitParam(name = "remeber_me", value = "记住我", required = false, dataType = "String")
     })
     @ResponseBody
     public RestResponseBo doLogin(@RequestParam String username,
                                   @RequestParam String password,
-                                  @RequestParam(required = false) String rememberMe) {
+                                  @RequestParam(required = false) String remeber_me) {
         // 密码MD5加密
         password = MD5Utils.encrypt(username, password);
-        UsernamePasswordToken token = new UsernamePasswordToken(username, password, StringUtils.isNotBlank(rememberMe));
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password, StringUtils.isNotBlank(remeber_me));
         // 获取Subject对象
         Subject subject = SecurityUtils.getSubject();
         try {

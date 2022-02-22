@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myblog.mapper.RelationshipMapper">
+    <resultMap id="BaseResultMap" type="com.myblog.model.entity.Relationships">
+        <id column="cid" jdbcType="INTEGER" property="cid" />
+        <id column="mid" jdbcType="INTEGER" property="mid" />
+    </resultMap>
+
+    <insert id="saveRelationship" parameterType="com.myblog.model.entity.Relationships">
+        insert into myblog.t_relationships (cid, mid)
+        values (#{cid,jdbcType=INTEGER}, #{mid,jdbcType=INTEGER})
+    </insert>
+
+    <delete id="delRelationshipById">
+        DELETE FROM myblog.t_relationships WHERE mid = #{mid}
+    </delete>
+
+    <delete id="delRelationshipByCId">
+        DELETE FROM myblog.t_relationships WHERE cid = #{cid}
+    </delete>
+
+    <select id="getRelationshipByMid" resultMap="BaseResultMap">
+        SELECT * FROM myblog.t_relationships WHERE mid = #{mid}
+    </select>
+
+    <select id="countById" resultType="java.lang.Long">
+        SELECT count(*) FROM myblog.t_relationships WHERE cid = #{cid} and mid = #{mid}
+    </select>
+</mapper>

@@ -1,10 +1,8 @@
 package com.myblog.constant;
 
 /**
- * description 操作七牛的api
- *
- * @author 70KG
- * @date 2019/1/4
+ * 操作七牛的api
+ * @author li192
  */
-public class QiniuApi {
+public class QinApi {
 }

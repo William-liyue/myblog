@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myblog.mapper.ContentsMapper">
+    <resultMap id="BaseResultMap" type="com.myblog.model.entity.Contents">
+        <id column="cid" jdbcType="INTEGER" property="cid" />
+        <result column="title" jdbcType="INTEGER" property="title" />
+        <result column="slug" jdbcType="VARCHAR" property="slug" />
+        <result column="created" jdbcType="INTEGER" property="created" />
+        <result column="modified" jdbcType="INTEGER" property="modified" />
+        <result column="content" jdbcType="VARCHAR" property="content" />
+        <result column="authorId" jdbcType="INTEGER" property="authorId" />
+        <result column="hits" jdbcType="INTEGER" property="hits" />
+        <result column="type" jdbcType="VARCHAR" property="type" />
+        <result column="fmtType" jdbcType="VARCHAR" property="fmtType" />
+        <result column="thumbImg" jdbcType="VARCHAR" property="thumbImg" />
+        <result column="tags" jdbcType="VARCHAR" property="tags" />
+        <result column="categories" jdbcType="VARCHAR" property="categories" />
+        <result column="status" jdbcType="VARCHAR" property="status" />
+        <result column="commentsNum" jdbcType="INTEGER" property="commentsNum" />
+        <result column="allowComment" jdbcType="INTEGER" property="allowComment" />
+        <result column="allowPing" jdbcType="INTEGER" property="allowPing" />
+        <result column="allowFeed" jdbcType="INTEGER" property="allowFeed" />
+    </resultMap>
+
+
+    <insert id="saveContent" parameterType="com.myblog.model.entity.Contents" useGeneratedKeys="true" keyProperty="cid">
+        insert into myblog.t_contents (cid, title, slug,created, modified, authorId,type, status, tags,categories, hits, commentsNum,allowComment, allowPing, allowFeed,content)
+        values (#{cid,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{slug,jdbcType=VARCHAR},
+        #{created,jdbcType=INTEGER}, #{modified,jdbcType=INTEGER}, #{authorId,jdbcType=INTEGER},
+        #{type,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{tags,jdbcType=VARCHAR},
+        #{categories,jdbcType=VARCHAR}, #{hits,jdbcType=INTEGER}, #{commentsNum,jdbcType=INTEGER},
+        #{allowComment,jdbcType=INTEGER}, #{allowPing,jdbcType=INTEGER}, #{allowFeed,jdbcType=INTEGER},
+        #{content,jdbcType=LONGVARCHAR})
+    </insert>
+
+
+    <update id="updateContent" parameterType="com.myblog.model.entity.Contents">
+        update myblog.t_contents
+        <set>
+            <if test="title != null">
+                title = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="slug != null">
+                slug = #{slug,jdbcType=VARCHAR},
+            </if>
+            <if test="created != null">
+                created = #{created,jdbcType=INTEGER},
+            </if>
+            <if test="modified != null">
+                modified = #{modified,jdbcType=INTEGER},
+            </if>
+            <if test="authorId != null">
+                authorId = #{authorId,jdbcType=INTEGER},
+            </if>
+            <if test="type != null">
+                type = #{type,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="tags != null">
+                tags = #{tags,jdbcType=VARCHAR},
+            </if>
+            <if test="fmtType != null">
+                fmtType = #{fmtType,jdbcType=VARCHAR},
+            </if>
+            <if test="thumbImg != null">
+                thumbImg = #{thumbImg,jdbcType=VARCHAR},
+            </if>
+            <if test="categories != null">
+                categories = #{categories,jdbcType=VARCHAR},
+            </if>
+            <if test="hits != null">
+                hits = #{hits,jdbcType=INTEGER},
+            </if>
+            <if test="commentsNum != null">
+                commentsNum = #{commentsNum,jdbcType=INTEGER},
+            </if>
+            <if test="allowComment != null">
+                allowComment = #{allowComment,jdbcType=INTEGER},
+            </if>
+            <if test="allowPing != null">
+                allowPing = #{allowPing,jdbcType=INTEGER},
+            </if>
+            <if test="allowFeed != null">
+                allowFeed = #{allowFeed,jdbcType=INTEGER},
+            </if>
+            <if test="content != null">
+                content = #{content,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where cid = #{cid,jdbcType=INTEGER}
+    </update>
+
+
+    <delete id="delContentById" parameterType="java.lang.Integer">
+        DELETE FROM myblog.t_contents
+        WHERE cid = #{cid,jdbcType=INTEGER}
+    </delete>
+
+    <select id="getContentsByType" resultMap="BaseResultMap">
+        SELECT * from myblog.t_contents WHERE type = #{type} AND status = #{status} ORDER BY created DESC
+    </select>
+
+    <select id="getContentById" resultMap="BaseResultMap">
+        SELECT * FROM myblog.t_contents WHERE cid = #{cid}
+    </select>
+
+    <resultMap id="archiveBoMap" type="com.myblog.model.dto.Archive">
+        <id column="date" property="date"/>
+        <result column="count" property="count"/>
+    </resultMap>
+
+    <select id="selectArchive" resultMap="archiveBoMap">
+        select FROM_UNIXTIME(created, '%Y年%m月') as date, count(*) as count from myblog.t_contents where type = 'post' and status = 'publish' group by date order by date desc
+    </select>
+
+    <select id="getContentsByConditions" resultMap="BaseResultMap">
+        SELECT count(*) FROM myblog.t_contents WHERE type = #{type} and status = #{status} and created &gt; #{startTime} and created &lt; #{endTime}
+    </select>
+
+    <select id="getContentBySlug" resultMap="BaseResultMap">
+        SELECT * FROM myblog.t_contents WHERE slug = #{slug}
+    </select>
+
+    <select id="getContentsConditions" resultMap="BaseResultMap">
+        SELECT * FROM myblog.t_contents WHERE type = #{type}
+        <if test="userId != -1">
+            and authorId = #{userId,jdbcType=INTEGER}
+        </if>
+        order by created desc
+    </select>
+
+    <select id="selectContentByConditions" resultType="java.lang.Long">
+        SELECT count(*) FROM myblog.t_contents WHERE type= #{type} and slug = #{slug}
+    </select>
+
+    <select id="getContentsListByMetaId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select a.*
+        from myblog.t_contents a left join myblog.t_relationships b on a.cid = b.cid
+        where b.mid = #{mid} and a.status = 'publish' and a.type = 'post'
+        order by a.created desc
+    </select>
+
+    <select id="searchContentByTitle" resultMap="BaseResultMap">
+        SELECT * FROM myblog.t_contents WHERE tags LIKE CONCAT('%',#{title},'%') AND type = #{type} and status = #{status}
+    </select>
+
+    <select id="getarticlesByConditions" resultMap="BaseResultMap">
+        SELECT * FROM myblog.t_contents WHERE type = #{type}
+        <if test="status != null">
+            and status = #{status,jdbcType=VARCHAR}
+        </if>
+        <if test="userId != -1">
+            and authorId = #{userId,jdbcType=INTEGER}
+        </if>
+        <if test="tag != null">
+            and tags like CONCAT('%',#{tag,jdbcType=VARCHAR},'%')
+        </if>
+        order by created desc
+    </select>
+
+    <select id="getContentCount" resultType="java.lang.Integer">
+        SELECT count(*) FROM myblog.t_contents WHERE status = 'publish'
+    </select>
+
+</mapper>

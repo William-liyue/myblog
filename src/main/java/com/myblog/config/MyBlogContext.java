@@ -5,28 +5,25 @@ import com.google.common.collect.Maps;
 import java.util.Map;
 
 /**
- * mystory应用上下文
- *
- * @author zhangjianbing
- * time 2019/8/21
+ * myblog应用上下文
+ * @author li192
  */
-public class MyStoryContext {
+public class MyBlogContext {
 
-    public static final ThreadLocal<Map<String, Object>> contextData = new ThreadLocal<>();
+    public static final ThreadLocal<Map<String, Object>> CONTEXT_DATA = new ThreadLocal<>();
 
     public static final String MENU_LIST = "menuList";
 
     /**
      * 将数据存入上下文中
-     *
      * @param key   指定的key
      * @param value 上下文的内容
      */
     public static void put(String key, Object value) {
-        Map<String, Object> data = contextData.get();
+        Map<String, Object> data = CONTEXT_DATA.get();
         if (data == null) {
             data = Maps.newHashMap();
-            contextData.set(data);
+            CONTEXT_DATA.set(data);
         }
         data.put(key, value);
     }
@@ -40,10 +37,10 @@ public class MyStoryContext {
      * @return T
      */
     public static <T> T getObj(Class<T> clazz, String key) {
-        if (contextData.get() == null) {
+        if (CONTEXT_DATA.get() == null) {
             return null;
         }
-        Object value = contextData.get().get(key);
+        Object value = CONTEXT_DATA.get().get(key);
         if (value == null) {
             return null;
         }
@@ -54,7 +51,7 @@ public class MyStoryContext {
      * 清除上下文
      */
     public static void remove() {
-        contextData.remove();
+        CONTEXT_DATA.remove();
     }
 
 

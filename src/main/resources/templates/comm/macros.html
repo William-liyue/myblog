@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- 前台分页 -->
+<ol class="page-navigator" th:fragment="pageNav(pageInfo, prevText, nextText, prefix, target)">
+
+    <th:block th:if="${pageInfo.hasPreviousPage}">
+        <li class="prev">
+            <a th:href="@{'/'+${prefix}+'/'+${pageInfo.prePage}+${target}}" th:text="${prevText}"></a>
+        </li>
+    </th:block>
+
+
+    <th:block th:each="navIndex :${ pageInfo.navigatepageNums}">
+        <li th:class="${pageInfo.pageNum==navIndex}?'current':''">
+            <a th:href="@{'/'+${prefix}+'/'+${navIndex}+${target}}" th:text="${navIndex}"></a>
+        </li>
+    </th:block>
+
+
+    <th:block th:if="${pageInfo.hasNextPage}">
+        <li class="next">
+            <a th:href="@{'/'+${prefix}+'/'+${pageInfo.nextPage}+${target}}" th:text="${nextText}"></a>
+        </li>
+    </th:block>
+
+</ol>
+
+<!-- 后台通用分页 -->
+<div th:fragment="pageAdminNav(pageInfo)">
+    <div class="clearfix">
+        <ul class="pagination m-b-5 pull-right">
+
+            <li th:if="${pageInfo.hasPreviousPage}">
+                <th:block th:if="${article_tag != null && article_status != null}">
+                    <a th:href="@{'?page='+${pageInfo.prePage}+'&tag='+${article_tag}+'&status='+${article_status}}" aria-label="Previous">
+                        <i class="fa fa-angle-left"></i>&nbsp;上一页
+                    </a>
+                </th:block>
+                <th:block th:if="${article_tag == null && article_status != null}">
+                    <a th:href="@{'?page='+${pageInfo.prePage}+'&status='+${article_status}}" aria-label="Previous">
+                        <i class="fa fa-angle-left"></i>&nbsp;上一页
+                    </a>
+                </th:block>
+                <th:block th:if="${article_tag != null && article_status == null}">
+                    <a th:href="@{'?page='+${pageInfo.prePage}+'&tag='+${article_tag}}" aria-label="Previous">
+                        <i class="fa fa-angle-left"></i>&nbsp;上一页
+                    </a>
+                </th:block>
+                <th:block th:if="${article_tag == null && article_status == null}">
+                    <a th:href="@{'?page='+${pageInfo.prePage}}" aria-label="Previous">
+                        <i class="fa fa-angle-left"></i>&nbsp;上一页
+                    </a>
+                </th:block>
+
+            </li>
+
+            <th:block th:each="nav : ${pageInfo.navigatepageNums}">
+                <li th:class="${nav==pageInfo.pageNum}?'active':''">
+                    <th:block th:if="${article_tag != null && article_status != null}">
+                        <a th:href="@{'?page='+${nav}+'&tag='+${article_tag}+'&status='+${article_status}}" th:text="${nav}"></a>
+                    </th:block>
+                    <th:block th:if="${article_tag != null && article_status == null}">
+                        <a th:href="@{'?page='+${nav}+'&tag='+${article_tag}}" th:text="${nav}"></a>
+                    </th:block>
+                    <th:block th:if="${article_tag == null && article_status != null}">
+                        <a th:href="@{'?page='+${nav}+'&status='+${article_status}}" th:text="${nav}"></a>
+                    </th:block>
+                    <th:block th:if="${article_tag == null && article_status == null}">
+                        <a th:href="@{'?page='+${nav}}" th:text="${nav}"></a>
+                    </th:block>
+                </li>
+            </th:block>
+
+            <li th:if="${pageInfo.hasNextPage}">
+                <th:block th:if="${article_tag != null && article_status != null}">
+                    <a th:href="@{'?page='+${pageInfo.nextPage}+'&tag='+${article_tag}+'&status='+${article_status}}" aria-label="Next">
+                        下一页&nbsp;<i class="fa fa-angle-right"></i>
+                    </a>
+                </th:block>
+                <th:block th:if="${article_tag == null && article_status != null}">
+                    <a th:href="@{'?page='+${pageInfo.nextPage}+'&status='+${article_status}}" aria-label="Next">
+                        下一页&nbsp;<i class="fa fa-angle-right"></i>
+                    </a>
+                </th:block>
+                <th:block th:if="${article_tag != null && article_status == null}">
+                    <a th:href="@{'?page='+${pageInfo.nextPage}+'&tag='+${article_tag}}" aria-label="Next">
+                        下一页&nbsp;<i class="fa fa-angle-right"></i>
+                    </a>
+                </th:block>
+                <th:block th:if="${article_tag == null && article_status == null}">
+                    <a th:href="@{'?page='+${pageInfo.nextPage}}" aria-label="Next">
+                        下一页&nbsp;<i class="fa fa-angle-right"></i>
+                    </a>
+                </th:block>
+            </li>
+
+            <li>
+                <span th:text="'共'+${pageInfo.pages}+'页'"></span>
+            </li>
+            <li>
+                <span th:text="'共'+${pageInfo.total}+'条'"></span>
+            </li>
+
+        </ul>
+    </div>
+</div>
+</body>
+</html>

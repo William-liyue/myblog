@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.myblog.mapper.LogMapper">
+    <resultMap id="BaseResultMap" type="com.myblog.model.entity.Logs">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="action" jdbcType="VARCHAR" property="action" />
+        <result column="data" jdbcType="VARCHAR" property="data" />
+        <result column="authorId" jdbcType="INTEGER" property="authorId" />
+        <result column="ip" jdbcType="VARCHAR" property="ip" />
+        <result column="created" jdbcType="INTEGER" property="created" />
+    </resultMap>
+
+    <insert id="visitSetLog" parameterType="com.myblog.model.entity.Logs" useGeneratedKeys="true" keyProperty="mid">
+        insert into myblog.t_logs (action,data,authorId,ip,created)
+        values (#{action,jdbcType=VARCHAR},#{data,jdbcType=VARCHAR},#{authorId,jdbcType=INTEGER},
+                #{ip,jdbcType=VARCHAR},
+                #{created,jdbcType=INTEGER})
+    </insert>
+
+    <delete id="deleteLogById">
+        DELETE FROM myblog.t_logs WHERE id = #{id}
+    </delete>
+
+    <select id="searchVisitLogByAction" resultMap="BaseResultMap">
+        SELECT * FROM myblog.t_logs WHERE action = #{action} order by created desc
+    </select>
+
+    <select id="getLogsByAction" resultMap="BaseResultMap">
+        SELECT * FROM myblog.t_logs WHERE 1=1
+        <if test="action != null">
+            and action = #{action,jdbcType=VARCHAR}
+        </if>
+        order by created desc
+    </select>
+
+</mapper>
